@@ -69,8 +69,8 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="Desenvolvedor Front-end Sênior &amp; Tech Lead React"
-        description="Transformo desafios complexos em ecossistemas digitais robustos. Especialista em React, TypeScript e arquitetura de sistemas. Confira meus projetos e artigos."
+        title="AI Enablement Lead &amp; Tech Lead Front-end"
+        description="Construo sistemas de ponta a ponta e lidero a área de AI Enablement da InBot: skills, agentes e sistemas internos em produção. Tech Lead Front-end com React, TypeScript e Convex."
         url="/"
       />
       <motion.div

@@ -26,7 +26,7 @@ export const enUS = {
   home: {
     greeting: "whoami",
     title: "Hi! I'm",
-    subtitle: "> Tech Lead Frontend & FuHome.tsx:69ll-Stack Engineer",
+    subtitle: "> AI Enablement Lead & Frontend Tech Lead",
     about: {
       title: " About me ",
       loading: "Loading about me...",
@@ -35,12 +35,12 @@ export const enUS = {
       title: "What they say about me",
     },
     hero: {
-      description: "I transform complex challenges into robust digital ecosystems, leading architecture, innovation and technical excellence.",
+      description: "I turn AI skills into internal systems teams use every day, from architecture to production.",
       technologies: [
         { name: "React", color: "bg-neon-lime" },
         { name: "TypeScript", color: "bg-neon-lime" },
-        { name: "Systems Architecture", color: "bg-neon-purple" },
-        { name: "DevOps & Infrastructure", color: "bg-neon-purple" }
+        { name: "Applied AI", color: "bg-neon-purple" },
+        { name: "Systems Architecture", color: "bg-neon-purple" }
       ],
     },
     skills: {
