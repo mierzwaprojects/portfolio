@@ -26,7 +26,7 @@ export const ptBR = {
   home: {
     greeting: "whoami",
     title: "Oi! Eu sou o",
-    subtitle: "> Tech Lead Frontend & Engenheiro Full-Stack",
+    subtitle: "> AI Enablement Lead & Tech Lead Frontend",
     about: {
       title: " Sobre mim ",
       loading: "Carregando sobre mim...",
@@ -35,12 +35,12 @@ export const ptBR = {
       title: "O que falam sobre mim",
     },
     hero: {
-      description: "Transformo desafios complexos em ecossistemas digitais robustos, liderando arquitetura, inovação e excelência técnica.",
+      description: "Transformo skills de IA em sistemas internos que os times usam todos os dias, da arquitetura à produção.",
       technologies: [
         { name: "React", color: "bg-neon-lime" },
         { name: "TypeScript", color: "bg-neon-lime" },
-        { name: "Arquitetura de Sistemas", color: "bg-neon-purple" },
-        { name: "DevOps & Infraestrutura", color: "bg-neon-purple" }
+        { name: "IA Aplicada", color: "bg-neon-purple" },
+        { name: "Arquitetura de Sistemas", color: "bg-neon-purple" }
       ],
     },
     skills: {

@@ -16,9 +16,9 @@ export function SEO({
   type = "website",
 }: SEOProps) {
   const siteTitle =
-    "Matheus Mierzwa | Desenvolvedor Front-end Sênior & Tech Lead React";
+    "Matheus Mierzwa | AI Enablement Lead & Tech Lead Front-end";
   const defaultDescription =
-    "Desenvolvedor Front-end Sênior e Tech Lead especializado em React, TypeScript e arquitetura de software. Portfolio com projetos, artigos e serviços de desenvolvimento web.";
+    "AI Enablement Lead e Tech Lead Front-end. Transformo skills de IA em sistemas internos usados todos os dias, com React, TypeScript, Node.js, Convex e Keycloak. Projetos, artigos e serviços.";
   const defaultImage =
     "https://i.postimg.cc/65bvTHHJ/og-image-port-math-100.jpg";
   const siteUrl = "https://www.mmlo.com.br";
