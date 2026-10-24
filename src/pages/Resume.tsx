@@ -15,6 +15,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { PageSkeleton } from "@/components/PageSkeleton";
+import { useHomeMetrics } from "@/hooks/useHomeMetrics";
 import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { useResume } from "@/hooks/useResume";
 import { resumeRepository, homeRepository } from "@/repositories/instances";
@@ -25,11 +26,13 @@ import { highlightNumbers } from "@/utils/homeContent";
 import { groupSkills, splitExperiences } from "@/utils/resumeContent";
 
 export default function Resume() {
-  const { t, tValue } = useTranslation();
+  const { t } = useTranslation();
   const { getItemsByType, isLoading } = useResume(resumeRepository);
   const { aboutText } = useHome(homeRepository);
   const { downloadCV, canDownload } = useDownloadCV();
   const [showOlder, setShowOlder] = useState(false);
+  // Todo hook antes do retorno antecipado: a ordem precisa ser a mesma em toda renderização.
+  const { metrics } = useHomeMetrics(homeRepository);
 
   if (isLoading) {
     return <PageSkeleton />;
@@ -44,7 +47,6 @@ export default function Resume() {
   const softSkills = getItemsByType("soft_skill");
 
   const summary = splitParagraphs(aboutText)[0] ?? "";
-  const metrics: Array<{ value: string; label: string }> = tValue("home.hero.metrics") || [];
   const { recent: recentExperience, older: olderExperience } = splitExperiences(experience);
   const skillGroups = groupSkills(skills, t("resume.stack"));
 
@@ -57,15 +59,15 @@ export default function Resume() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: index * 0.1 }}
       >
-        <Card className="bg-card border-white/10 hover:border-neon-purple/50 transition-colors">
+        <Card className="bg-card border-foreground/10 hover:border-neon-purple/50 transition-colors">
           <CardHeader>
-            <CardTitle className="text-xl text-white">{content.role}</CardTitle>
-            <p className="text-neon-green font-medium">{content.company}</p>
-            <p className="text-sm text-gray-400">{content.period}</p>
+            <CardTitle className="text-xl text-foreground-strong">{content.role}</CardTitle>
+            <p className="text-neon-lime font-medium">{content.company}</p>
+            <p className="text-sm text-foreground/65">{content.period}</p>
           </CardHeader>
           <CardContent>
             <div
-              className="text-gray-300 leading-relaxed prose prose-invert prose-headings:text-white prose-strong:text-white prose-ul:text-gray-300 prose-li:text-gray-300 max-w-none [&_ul]:list-disc [&_ul]:list-outside [&_ul]:space-y-2 [&_ul]:ml-6 [&_ul]:pl-0 [&_li]:pl-2"
+              className="text-foreground/90 leading-relaxed prose dark:prose-invert prose-headings:text-foreground-strong prose-strong:text-foreground-strong prose-ul:text-foreground/90 prose-li:text-foreground/90 max-w-none [&_ul]:list-disc [&_ul]:list-outside [&_ul]:space-y-2 [&_ul]:ml-6 [&_ul]:pl-0 [&_li]:pl-2"
               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.description) }}
             />
           </CardContent>
@@ -87,10 +89,10 @@ export default function Resume() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground-strong to-foreground/60 bg-clip-text text-transparent">
             {t("resume.title")}
           </h1>
-          <p className="text-xl text-gray-400">{t("resume.subtitle")}</p>
+          <p className="text-xl text-foreground/65">{t("resume.subtitle")}</p>
         </motion.div>
 
         {/* Resumo: quem sou em um parágrafo, os números e o PDF logo no topo */}
@@ -101,10 +103,10 @@ export default function Resume() {
           className="space-y-6"
         >
           {summary && (
-            <p className="text-lg text-gray-200 leading-relaxed border-l-2 border-neon-purple/50 pl-6">
+            <p className="text-lg text-foreground leading-relaxed border-l-2 border-neon-purple/50 pl-6">
               {highlightNumbers(summary).map((segment, i) =>
                 segment.highlight ? (
-                  <strong key={i} className="text-white font-semibold">{segment.text}</strong>
+                  <strong key={i} className="text-foreground-strong font-semibold">{segment.text}</strong>
                 ) : (
                   <span key={i}>{segment.text}</span>
                 )
@@ -112,12 +114,12 @@ export default function Resume() {
             </p>
           )}
           {metrics.length > 0 && (
-            <dl className="grid grid-cols-2 lg:grid-cols-4 gap-px rounded-xl overflow-hidden border border-white/10 bg-white/10">
+            <dl className="grid grid-cols-2 lg:grid-cols-4 gap-px rounded-xl overflow-hidden border border-foreground/10 bg-foreground/10">
               {metrics.map(metric => (
-                <div key={metric.label} className="bg-[#141414] p-5">
+                <div key={metric.label} className="bg-background p-5">
                   <dt className="sr-only">{metric.label}</dt>
-                  <dd className="text-2xl font-bold text-white tracking-tight">{metric.value}</dd>
-                  <dd className="text-sm text-gray-400 mt-2 leading-snug">{metric.label}</dd>
+                  <dd className="text-2xl font-bold text-foreground-strong tracking-tight">{metric.value}</dd>
+                  <dd className="text-sm text-foreground/65 mt-2 leading-snug">{metric.label}</dd>
                 </div>
               ))}
             </dl>
@@ -126,7 +128,7 @@ export default function Resume() {
             onClick={downloadCV}
             disabled={!canDownload}
             data-umami-event="resume-download-cv"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-neon-purple text-black font-semibold hover:bg-neon-purple/90 transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-neon-purple text-primary-foreground font-semibold hover:bg-neon-purple/90 transition-colors disabled:opacity-50"
           >
             <Download className="w-4 h-4" />
             {t("resume.downloadCV")}
@@ -156,17 +158,17 @@ export default function Resume() {
                             ease: "easeInOut",
                           }}
                         >
-                          <Card className="bg-card border-white/10">
+                          <Card className="bg-card border-foreground/10">
                             <CardHeader>
-                              <div className="h-6 bg-white/10 rounded w-3/4 mb-2 animate-pulse" />
-                              <div className="h-4 bg-white/10 rounded w-1/2 mb-2 animate-pulse" />
-                              <div className="h-4 bg-white/10 rounded w-1/4 animate-pulse" />
+                              <div className="h-6 bg-foreground/10 rounded w-3/4 mb-2 animate-pulse" />
+                              <div className="h-4 bg-foreground/10 rounded w-1/2 mb-2 animate-pulse" />
+                              <div className="h-4 bg-foreground/10 rounded w-1/4 animate-pulse" />
                             </CardHeader>
                             <CardContent>
                               <div className="space-y-2">
-                                <div className="h-4 bg-white/10 rounded w-full animate-pulse" />
-                                <div className="h-4 bg-white/10 rounded w-5/6 animate-pulse" />
-                                <div className="h-4 bg-white/10 rounded w-4/6 animate-pulse" />
+                                <div className="h-4 bg-foreground/10 rounded w-full animate-pulse" />
+                                <div className="h-4 bg-foreground/10 rounded w-5/6 animate-pulse" />
+                                <div className="h-4 bg-foreground/10 rounded w-4/6 animate-pulse" />
                               </div>
                             </CardContent>
                           </Card>
@@ -181,7 +183,7 @@ export default function Resume() {
                           <button
                             onClick={() => setShowOlder(v => !v)}
                             aria-expanded={showOlder}
-                            className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-lg border border-white/10 text-sm font-mono text-gray-400 hover:text-white hover:border-neon-purple/40 transition-colors"
+                            className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-lg border border-foreground/10 text-sm font-mono text-foreground/65 hover:text-foreground-strong hover:border-neon-purple/40 transition-colors"
                           >
                             <ChevronDown className={`w-4 h-4 transition-transform ${showOlder ? "rotate-180" : ""}`} />
                             {showOlder ? t("resume.hideOlder") : `${t("resume.showOlder")} (${olderExperience.length})`}
@@ -215,16 +217,16 @@ export default function Resume() {
                             ease: "easeInOut",
                           }}
                         >
-                          <Card className="bg-card border-white/10">
+                          <Card className="bg-card border-foreground/10">
                             <CardHeader>
-                              <div className="h-6 bg-white/10 rounded w-3/4 mb-2 animate-pulse" />
-                              <div className="h-4 bg-white/10 rounded w-1/2 mb-2 animate-pulse" />
-                              <div className="h-4 bg-white/10 rounded w-1/4 animate-pulse" />
+                              <div className="h-6 bg-foreground/10 rounded w-3/4 mb-2 animate-pulse" />
+                              <div className="h-4 bg-foreground/10 rounded w-1/2 mb-2 animate-pulse" />
+                              <div className="h-4 bg-foreground/10 rounded w-1/4 animate-pulse" />
                             </CardHeader>
                             <CardContent>
                               <div className="space-y-2">
-                                <div className="h-4 bg-white/10 rounded w-full animate-pulse" />
-                                <div className="h-4 bg-white/10 rounded w-5/6 animate-pulse" />
+                                <div className="h-4 bg-foreground/10 rounded w-full animate-pulse" />
+                                <div className="h-4 bg-foreground/10 rounded w-5/6 animate-pulse" />
                               </div>
                             </CardContent>
                           </Card>
@@ -241,21 +243,21 @@ export default function Resume() {
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: index * 0.1 }}
                         >
-                          <Card className="bg-card border-white/10 hover:border-neon-purple/50 transition-colors">
+                          <Card className="bg-card border-foreground/10 hover:border-neon-purple/50 transition-colors">
                             <CardHeader>
-                              <CardTitle className="text-xl text-white">
+                              <CardTitle className="text-xl text-foreground-strong">
                                 {content.degree}
                               </CardTitle>
-                              <p className="text-neon-green font-medium">
+                              <p className="text-neon-lime font-medium">
                                 {content.institution}
                               </p>
-                              <p className="text-sm text-gray-400">
+                              <p className="text-sm text-foreground/65">
                                 {content.period}
                               </p>
                             </CardHeader>
                             <CardContent>
                               <div
-                                className="text-gray-300 leading-relaxed prose prose-invert prose-headings:text-white prose-strong:text-white prose-ul:text-gray-300 prose-li:text-gray-300 max-w-none [&_ul]:list-disc [&_ul]:list-outside [&_ul]:space-y-2 [&_ul]:ml-6 [&_ul]:pl-0 [&_li]:pl-2"
+                                className="text-foreground/90 leading-relaxed prose dark:prose-invert prose-headings:text-foreground-strong prose-strong:text-foreground-strong prose-ul:text-foreground/90 prose-li:text-foreground/90 max-w-none [&_ul]:list-disc [&_ul]:list-outside [&_ul]:space-y-2 [&_ul]:ml-6 [&_ul]:pl-0 [&_li]:pl-2"
                                 dangerouslySetInnerHTML={{
                                   __html: DOMPurify.sanitize(content.description),
                                 }}
@@ -288,9 +290,9 @@ export default function Resume() {
                             repeat: Infinity,
                             ease: "easeInOut",
                           }}
-                          className="bg-card border border-white/10 p-4 rounded-lg"
+                          className="bg-card border border-foreground/10 p-4 rounded-lg"
                         >
-                          <div className="h-4 bg-white/10 rounded w-full animate-pulse" />
+                          <div className="h-4 bg-foreground/10 rounded w-full animate-pulse" />
                         </motion.div>
                       ))
                     : courses.map((item, index) => {
@@ -301,9 +303,9 @@ export default function Resume() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.05 }}
-                            className="bg-card border border-white/10 p-4 rounded-lg hover:border-neon-green/50 transition-colors"
+                            className="bg-card border border-foreground/10 p-4 rounded-lg hover:border-neon-lime/50 transition-colors"
                           >
-                            <p className="text-gray-300">{content.text}</p>
+                            <p className="text-foreground/90">{content.text}</p>
                           </motion.div>
                         );
                       })}
@@ -329,9 +331,9 @@ export default function Resume() {
                             repeat: Infinity,
                             ease: "easeInOut",
                           }}
-                          className="bg-card border border-white/10 p-4 rounded-lg"
+                          className="bg-card border border-foreground/10 p-4 rounded-lg"
                         >
-                          <div className="h-4 bg-white/10 rounded w-full animate-pulse" />
+                          <div className="h-4 bg-foreground/10 rounded w-full animate-pulse" />
                         </motion.div>
                       ))
                     : volunteer.map((item, index) => {
@@ -342,9 +344,9 @@ export default function Resume() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.05 }}
-                            className="bg-card border border-white/10 p-4 rounded-lg hover:border-neon-green/50 transition-colors"
+                            className="bg-card border border-foreground/10 p-4 rounded-lg hover:border-neon-lime/50 transition-colors"
                           >
-                            <p className="text-gray-300">{content.text}</p>
+                            <p className="text-foreground/90">{content.text}</p>
                           </motion.div>
                         );
                       })}
@@ -364,14 +366,14 @@ export default function Resume() {
                 <div className="space-y-5">
                   {skillGroups.map(group => (
                     <div key={group.name}>
-                      <h3 className="text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">
+                      <h3 className="text-xs font-mono uppercase tracking-wider text-foreground/42 mb-2">
                         {group.name}
                       </h3>
                       <div className="flex flex-wrap gap-2">
                         {group.items.map(skill => (
                           <span
                             key={skill.id}
-                            className="text-sm text-gray-200 bg-white/5 border border-white/10 rounded-md px-3 py-1"
+                            className="text-sm text-foreground bg-foreground/5 border border-foreground/10 rounded-md px-3 py-1"
                           >
                             {skill.translatedContent?.name}
                           </span>
@@ -402,7 +404,7 @@ export default function Resume() {
                             ease: "easeInOut",
                           }}
                         >
-                          <div className="h-8 w-24 bg-white/10 rounded animate-pulse" />
+                          <div className="h-8 w-24 bg-foreground/10 rounded animate-pulse" />
                         </motion.div>
                       ))
                     : softSkills.map((item, index) => {
@@ -416,7 +418,7 @@ export default function Resume() {
                           >
                             <Badge
                               variant="outline"
-                              className="border-neon-purple/50 text-gray-300 hover:bg-neon-purple/10 transition-colors py-1 px-3"
+                              className="border-neon-purple/50 text-foreground/90 hover:bg-neon-purple/10 transition-colors py-1 px-3"
                             >
                               {content.text}
                             </Badge>
@@ -445,10 +447,10 @@ export default function Resume() {
                             repeat: Infinity,
                             ease: "easeInOut",
                           }}
-                          className="bg-card border border-white/10 p-4 rounded-lg"
+                          className="bg-card border border-foreground/10 p-4 rounded-lg"
                         >
-                          <div className="h-5 bg-white/10 rounded w-1/2 mb-2 animate-pulse" />
-                          <div className="h-4 bg-white/10 rounded w-1/3 animate-pulse" />
+                          <div className="h-5 bg-foreground/10 rounded w-1/2 mb-2 animate-pulse" />
+                          <div className="h-4 bg-foreground/10 rounded w-1/3 animate-pulse" />
                         </motion.div>
                       ))
                     : languages.map((item, index) => {
@@ -459,12 +461,12 @@ export default function Resume() {
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            className="bg-card border border-white/10 p-4 rounded-lg"
+                            className="bg-card border border-foreground/10 p-4 rounded-lg"
                           >
-                            <h3 className="text-white font-medium">
+                            <h3 className="text-foreground-strong font-medium">
                               {content.name}
                             </h3>
-                            <p className="text-neon-green text-sm">
+                            <p className="text-neon-lime text-sm">
                               {content.level}
                             </p>
                           </motion.div>

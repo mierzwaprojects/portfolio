@@ -12,7 +12,8 @@ export type PluginId =
   | 'i18n'
   | 'playground'
   | 'testimonials'
-  | 'testimonials-intake';
+  | 'testimonials-intake'
+  | 'contract-templates';
 
 export interface PluginDefinition {
   id: PluginId;
@@ -49,7 +50,7 @@ export const PLUGIN_REGISTRY: PluginDefinition[] = [
   {
     id: 'payments',
     label: 'Pagamentos',
-    description: 'Links de pagamento via Asaas e Stripe',
+    description: 'Checkout com PIX, boleto e cartão via Asaas',
     defaultEnabled: true,
     tables: ['checkouts'],
     adminRoutes: ['/admin/payment-links'],
@@ -162,6 +163,15 @@ export const PLUGIN_REGISTRY: PluginDefinition[] = [
     publicRoutes: [],
     minRole: 'admin',
     parentId: 'testimonials',
+  },
+  {
+    id: 'contract-templates',
+    label: 'Templates de Contrato',
+    description: 'Templates editáveis para geração de contratos PDF',
+    defaultEnabled: false,
+    tables: ['contractTemplates'],
+    adminRoutes: ['/admin/contracts'],
+    minRole: 'admin',
   },
 ];
 

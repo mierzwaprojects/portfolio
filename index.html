@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark" data-color-mode="dark" data-color-toggle="false" data-texture="none">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -16,7 +16,6 @@
       content="AI Enablement Lead e Tech Lead Front-end. Transformo skills de IA em sistemas internos usados todos os dias, com React, TypeScript, Node.js, Convex e Keycloak. Projetos, artigos e serviços."
     />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://www.mmlo.com.br/" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -33,7 +32,8 @@
       property="og:image"
       content="https://i.postimg.cc/65bvTHHJ/og-image-port-math-100.jpg"
     />
-    <meta property="og:site_name" content="Matheus Mierzwa Portfolio" />
+    <meta property="og:image" content="" />
+    <meta property="og:site_name" content="Rubrica Portfolio" />
     <meta property="og:locale" content="pt_BR" />
 
     <!-- Twitter -->
@@ -51,6 +51,7 @@
       property="twitter:image"
       content="https://i.postimg.cc/65bvTHHJ/og-image-port-math-100.jpg"
     />
+    <meta property="twitter:image" content="" />
     <meta property="twitter:creator" content="@matheusmierzwa" />
 
     <!-- Configurações adicionais -->
@@ -58,7 +59,7 @@
     <meta name="author" content="Matheus Mierzwa" />
     <meta
       name="keywords"
-      content="desenvolvedor front-end, desenvolvedor react, tech lead frontend, typescript, full-stack developer, UI designer, arquitetura de software, portfolio desenvolvedor, freelancer react brasil"
+      content="portfolio, developer, web development"
     />
 
     <!-- Favicon e ícones -->
@@ -68,7 +69,7 @@
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="Matheus Mierzwa - Blog RSS Feed"
+      title="Portfolio RSS Feed"
       href="/rss.xml"
     />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -82,15 +83,14 @@
       href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <!-- Modo de cor e textura (data-* do <html>, gravados pelo CLI). Roda antes da
+         página aparecer para não piscar o modo errado. Fica num arquivo porque a CSP
+         do site publicado bloqueia script embutido. -->
+    <script src="/color-mode.js"></script>
   </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script
-      defer
-      src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"
-    ></script>
   </body>
 </html>

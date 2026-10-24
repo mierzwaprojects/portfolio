@@ -3,6 +3,7 @@ import { AdminLayout } from "./Dashboard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ImagePicker } from "@/components/admin/ImagePicker";
@@ -43,6 +44,11 @@ export default function AdminContact() {
     behance: ""
   });
 
+  const [proposalData, setProposalData] = useState({
+    proposalIntro: "",
+    proposalAiContext: "",
+  });
+
   useEffect(() => {
     if (data) {
       const rolePT = data.roleTranslations?.ptBR || data.role || "";
@@ -63,6 +69,10 @@ export default function AdminContact() {
         linkedin: data.linkedinUrl || "",
         github: data.githubUrl || "",
         behance: data.behanceUrl || ""
+      });
+      setProposalData({
+        proposalIntro: (data as any).proposalIntro || "",
+        proposalAiContext: (data as any).proposalAiContext || "",
       });
     }
   }, [data]);
@@ -96,6 +106,8 @@ export default function AdminContact() {
         linkedinUrl: socialMedia.linkedin,
         githubUrl: socialMedia.github,
         behanceUrl: socialMedia.behance,
+        proposalIntro: proposalData.proposalIntro || undefined,
+        proposalAiContext: proposalData.proposalAiContext || undefined,
       });
       toast.success("Alterações salvas com sucesso!");
     } catch (error) {
@@ -108,7 +120,7 @@ export default function AdminContact() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-white">Carregando...</div>
+          <div className="text-foreground-strong">Carregando...</div>
         </div>
       </AdminLayout>
     );
@@ -118,28 +130,28 @@ export default function AdminContact() {
     <AdminLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-white">Informações de Contato</h1>
+          <h1 className="text-3xl font-bold text-foreground-strong">Informações de Contato</h1>
         </div>
 
-        <Card className="bg-card border-white/10">
+        <Card className="bg-card border-foreground/10">
           <CardHeader>
-            <CardTitle className="text-white">Dados Pessoais</CardTitle>
+            <CardTitle className="text-foreground-strong">Dados Pessoais</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label className="text-white">Nome Completo*</Label>
+                <Label className="text-foreground-strong">Nome Completo*</Label>
                 <Input
                   value={personalData.name}
                   onChange={(e) => handlePersonalChange("name", e.target.value)}
-                  className="bg-white/5 border-white/10 text-white"
+                  className="bg-foreground/5 border-foreground/10 text-foreground-strong"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-white">Imagem de Perfil</Label>
+                <Label className="text-foreground-strong">Imagem de Perfil</Label>
                 <div className="flex items-center gap-4">
                   {(pickedAvatarQuery?.url || personalData.avatarUrl) && (
-                    <div className="w-16 h-16 rounded-full overflow-hidden border border-white/10">
+                    <div className="w-16 h-16 rounded-full overflow-hidden border border-foreground/10">
                       <img src={pickedAvatarQuery?.url || personalData.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
                     </div>
                   )}
@@ -147,7 +159,7 @@ export default function AdminContact() {
                     <ImagePicker
                       onSelect={(id) => setPickedAvatarId(Array.isArray(id) ? id[0] : id)}
                       trigger={
-                        <Button type="button" variant="outline" className="border-white/10 hover:bg-white/5 text-white">
+                        <Button type="button" variant="outline" className="border-foreground/10 hover:bg-foreground/5 text-foreground-strong">
                           <ImageIcon className="w-4 h-4 mr-2" />
                           {pickedAvatarQuery?.url || personalData.avatarUrl ? "Alterar Imagem" : "Selecionar Imagem"}
                         </Button>
@@ -159,84 +171,84 @@ export default function AdminContact() {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-white">Título Profissional</Label>
+              <Label className="text-foreground-strong">Título Profissional</Label>
               <Input
                 value={personalData.role}
                 onChange={(e) => handlePersonalChange("role", e.target.value)}
-                className="bg-white/5 border-white/10 text-white"
+                className="bg-foreground/5 border-foreground/10 text-foreground-strong"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label className="text-white">Email</Label>
+                <Label className="text-foreground-strong">Email</Label>
                 <div className="flex items-center gap-4">
                   <Input
                     value={personalData.email}
                     onChange={(e) => handlePersonalChange("email", e.target.value)}
-                    className="bg-white/5 border-white/10 text-white flex-1"
+                    className="bg-foreground/5 border-foreground/10 text-foreground-strong flex-1"
                   />
                   <div className="flex items-center gap-2">
                     <Switch
                       checked={personalData.showEmail}
                       onCheckedChange={(checked) => handlePersonalChange("showEmail", checked)}
                     />
-                    <span className="text-sm text-gray-400">Mostrar</span>
+                    <span className="text-sm text-foreground/65">Mostrar</span>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-white">WhatsApp</Label>
+                <Label className="text-foreground-strong">WhatsApp</Label>
                 <div className="flex items-center gap-4">
                   <Input
                     value={personalData.phone}
                     onChange={(e) => handlePersonalChange("phone", e.target.value)}
-                    className="bg-white/5 border-white/10 text-white flex-1"
+                    className="bg-foreground/5 border-foreground/10 text-foreground-strong flex-1"
                   />
                   <div className="flex items-center gap-2">
                     <Switch
                       checked={personalData.showPhone}
                       onCheckedChange={(checked) => handlePersonalChange("showPhone", checked)}
                     />
-                    <span className="text-sm text-gray-400">Mostrar</span>
+                    <span className="text-sm text-foreground/65">Mostrar</span>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-white">Data de Nascimento</Label>
+                <Label className="text-foreground-strong">Data de Nascimento</Label>
                 <div className="flex items-center gap-4">
                   <Input
                     type="date"
                     value={personalData.birthDate}
                     onChange={(e) => handlePersonalChange("birthDate", e.target.value)}
-                    className="bg-white/5 border-white/10 text-white flex-1"
+                    className="bg-foreground/5 border-foreground/10 text-foreground-strong flex-1"
                   />
                   <div className="flex items-center gap-2">
                     <Switch
                       checked={personalData.showBirthDate}
                       onCheckedChange={(checked) => handlePersonalChange("showBirthDate", checked)}
                     />
-                    <span className="text-sm text-gray-400">Mostrar</span>
+                    <span className="text-sm text-foreground/65">Mostrar</span>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-white">Localização</Label>
+                <Label className="text-foreground-strong">Localização</Label>
                 <div className="flex items-center gap-4">
                   <Input
                     value={personalData.location}
                     onChange={(e) => handlePersonalChange("location", e.target.value)}
-                    className="bg-white/5 border-white/10 text-white flex-1"
+                    className="bg-foreground/5 border-foreground/10 text-foreground-strong flex-1"
                   />
                   <div className="flex items-center gap-2">
                     <Switch
                       checked={personalData.showLocation}
                       onCheckedChange={(checked) => handlePersonalChange("showLocation", checked)}
                     />
-                    <span className="text-sm text-gray-400">Mostrar</span>
+                    <span className="text-sm text-foreground/65">Mostrar</span>
                   </div>
                 </div>
               </div>
@@ -244,33 +256,60 @@ export default function AdminContact() {
           </CardContent>
         </Card>
 
-        <Card className="bg-card border-white/10">
+        <Card className="bg-card border-foreground/10">
           <CardHeader>
-            <CardTitle className="text-white">Redes Sociais</CardTitle>
+            <CardTitle className="text-foreground-strong">Redes Sociais</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-white">LinkedIn</Label>
+              <Label className="text-foreground-strong">LinkedIn</Label>
               <Input
                 value={socialMedia.linkedin}
                 onChange={(e) => handleSocialChange("linkedin", e.target.value)}
-                className="bg-white/5 border-white/10 text-white"
+                className="bg-foreground/5 border-foreground/10 text-foreground-strong"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-white">GitHub</Label>
+              <Label className="text-foreground-strong">GitHub</Label>
               <Input
                 value={socialMedia.github}
                 onChange={(e) => handleSocialChange("github", e.target.value)}
-                className="bg-white/5 border-white/10 text-white"
+                className="bg-foreground/5 border-foreground/10 text-foreground-strong"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-white">Behance</Label>
+              <Label className="text-foreground-strong">Behance</Label>
               <Input
                 value={socialMedia.behance}
                 onChange={(e) => handleSocialChange("behance", e.target.value)}
-                className="bg-white/5 border-white/10 text-white"
+                className="bg-foreground/5 border-foreground/10 text-foreground-strong"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-foreground/10">
+          <CardHeader>
+            <CardTitle className="text-foreground-strong">Propostas Comerciais</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label className="text-foreground-strong">Texto de apresentação nas propostas</Label>
+              <Textarea
+                value={proposalData.proposalIntro}
+                onChange={(e) => setProposalData(prev => ({ ...prev, proposalIntro: e.target.value }))}
+                placeholder="Olá, tudo bem? Antes de tudo, agradeço o interesse! Sou [seu nome], [sua profissão]..."
+                className="bg-foreground/5 border-foreground/10 text-foreground-strong min-h-[120px]"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-foreground-strong">Perfil para geração de propostas por IA</Label>
+              <p className="text-xs text-foreground/42">Descreva sua experiência, área de atuação e diferenciais. A IA usará este contexto para gerar propostas personalizadas.</p>
+              <Textarea
+                value={proposalData.proposalAiContext}
+                onChange={(e) => setProposalData(prev => ({ ...prev, proposalAiContext: e.target.value }))}
+                placeholder="Ex: Designer com 5 anos de experiência em branding e identidade visual para pequenas e médias empresas. Especialidade em logotipos, guias de marca e materiais impressos..."
+                className="bg-foreground/5 border-foreground/10 text-foreground-strong min-h-[120px]"
               />
             </div>
           </CardContent>

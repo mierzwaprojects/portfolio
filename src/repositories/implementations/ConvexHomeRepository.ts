@@ -1,3 +1,4 @@
+import { parseHomeMetrics, type HomeMetric } from "@/utils/homeMetrics";
 import { ConvexHttpClient } from "convex/browser";
 import {
   HomeRepository,
@@ -66,5 +67,10 @@ export class ConvexHomeRepository implements HomeRepository {
   async getWorkPrinciples(): Promise<WorkPrinciple[]> {
     const data = await client.query(api.homeContent.getByKey, { key: "work_principles" });
     return parseWorkPrinciples((data as any)?.value);
+  }
+
+  async getHomeMetrics(): Promise<HomeMetric[]> {
+    const data = await client.query(api.homeContent.getByKey, { key: "home_metrics" });
+    return parseHomeMetrics((data as any)?.value);
   }
 }

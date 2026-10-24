@@ -311,6 +311,8 @@ export default defineSchema({
     linkedinUrl: v.optional(v.string()),
     githubUrl: v.optional(v.string()),
     behanceUrl: v.optional(v.string()),
+    proposalIntro: v.optional(v.string()),
+    proposalAiContext: v.optional(v.string()),
     createdAt: v.number(),
     updatedAt: v.optional(v.number()),
   }),
@@ -375,6 +377,8 @@ export default defineSchema({
     updatedAt: v.optional(v.number()),
     deletedAt: v.optional(v.number()),
     deletedBy: v.optional(v.id('users')),
+    templateId: v.optional(v.id('contractTemplates')),
+    templateSnapshot: v.optional(v.string()),
   })
     .index('by_slug', ['slug'])
     .index('by_userId', ['userId'])
@@ -453,6 +457,7 @@ export default defineSchema({
       v.literal('paid'),
       v.literal('expired'),
       v.literal('failed'),
+      v.literal('refunded'),
     ),
     paymentMethod: v.optional(v.string()),
     installmentCount: v.optional(v.number()),
@@ -464,7 +469,21 @@ export default defineSchema({
     pixQrCodeImage: v.optional(v.string()),
     pixExpirationDate: v.optional(v.number()),
     bankSlipUrl: v.optional(v.string()),
+    /** Linha digitável do boleto. */
+    bankSlipLine: v.optional(v.string()),
+    /** Página de pagamento do Asaas (cartão). */
+    invoiceUrl: v.optional(v.string()),
     asaasChargeId: v.optional(v.string()),
+    /** Parcelamento no Asaas (cartão em 2x ou mais): cancelar remove todas as parcelas. */
+    asaasInstallmentId: v.optional(v.string()),
+    /** Trava contra duas gerações de cobrança ao mesmo tempo. */
+    paymentLockUntil: v.optional(v.number()),
+    /** Cobranças geradas por este link (limite contra abuso). */
+    chargeAttempts: v.optional(v.number()),
+    /** Cobrança e valor confirmados pelo webhook. */
+    paidChargeId: v.optional(v.string()),
+    paidValue: v.optional(v.number()),
+    refundedAt: v.optional(v.number()),
     externalReference: v.optional(v.string()),
     expiresAt: v.number(),
     completedAt: v.optional(v.number()),
@@ -476,6 +495,7 @@ export default defineSchema({
     .index('by_uniqueLink', ['uniqueLink'])
     .index('by_asaasChargeId', ['asaasChargeId'])
     .index('by_status', ['status'])
+    .index('by_status_and_expiresAt', ['status', 'expiresAt'])
     .index('by_customerEmail', ['customerEmail'])
     .index('by_expiresAt', ['expiresAt'])
     .index('by_deletedAt', ['deletedAt']),
@@ -635,4 +655,33 @@ export default defineSchema({
     .index('by_targetType_and_targetId', ['targetType', 'targetId'])
     .index('by_createdAt', ['createdAt'])
     .index('by_expiresAt', ['expiresAt']),
+
+  // ── siteConfig ─────────────────────────────────────────────────────────────
+  siteConfig: defineTable({
+    key: v.string(),
+    value: v.any(),
+    createdAt: v.number(),
+    updatedAt: v.optional(v.number()),
+  }).index('by_key', ['key']),
+
+  // ── contractTemplates ──────────────────────────────────────────────────────
+  contractTemplates: defineTable({
+    name: v.string(),
+    description: v.optional(v.string()),
+    content: v.string(),
+    isDefault: v.boolean(),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  }).index('by_is_default', ['isDefault']),
+
+  // ── siteTexts ──────────────────────────────────────────────────────────────
+  siteTexts: defineTable({
+    key: v.string(),
+    page: v.string(),
+    ptBR: v.string(),
+    enUS: v.optional(v.string()),
+    updatedAt: v.optional(v.number()),
+  })
+    .index('by_key', ['key'])
+    .index('by_page', ['page']),
 });

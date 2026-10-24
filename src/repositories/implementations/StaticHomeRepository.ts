@@ -1,4 +1,5 @@
 import { pickHomeTestimonials } from "@/utils/homeContent";
+import { parseHomeMetrics, type HomeMetric } from "@/utils/homeMetrics";
 import {
   HomeRepository,
   ContactInfo,
@@ -101,6 +102,17 @@ export class StaticHomeRepository implements HomeRepository {
       if (!response.ok) return [];
       const data = await response.json();
       return parseWorkPrinciples(data?.work_principles);
+    } catch {
+      return [];
+    }
+  }
+
+  async getHomeMetrics(): Promise<HomeMetric[]> {
+    try {
+      const response = await fetch("/data/home.json");
+      if (!response.ok) return [];
+      const data = await response.json();
+      return parseHomeMetrics(data?.home_metrics);
     } catch {
       return [];
     }

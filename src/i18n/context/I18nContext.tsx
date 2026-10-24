@@ -1,8 +1,11 @@
 import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
+import { useQuery } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
 import { LocaleDetector } from '../interfaces/LocaleDetector';
 import { TranslationsRepository } from '../repositories/TranslationsRepository';
 import { TranslationService } from '../interfaces/TranslationService';
 import { StaticTranslationsRepository } from '../implementations/StaticTranslationsRepository';
+import { DynamicTranslationsRepository } from '../implementations/DynamicTranslationsRepository';
 import { BrowserLocaleDetector } from '../implementations/BrowserLocaleDetector';
 import { NoopTranslationService } from '../implementations/NoopTranslationService';
 import { CachedTranslationService } from '../implementations/CachedTranslationService';
@@ -30,9 +33,19 @@ interface I18nProviderProps {
 export function I18nProvider({
   children,
   localeDetector = new BrowserLocaleDetector(),
-  translationsRepository = new StaticTranslationsRepository(),
+  translationsRepository,
   translationService,
 }: I18nProviderProps) {
+  const siteTextsRecords = useQuery(api.siteTexts.getAll);
+  // Use Dynamic apenas quando há records de tradução no Convex.
+  // Quando siteTextsRecords é undefined (loading) ou [] (vazio, ex.: plugin i18n
+  // desabilitado), usa Static (pt-BR/en-US hardcoded) para evitar que t() retorne
+  // a chave literal como fallback.
+  const resolvedRepository: TranslationsRepository = translationsRepository
+    ?? (siteTextsRecords && siteTextsRecords.length > 0
+      ? new DynamicTranslationsRepository(siteTextsRecords)
+      : new StaticTranslationsRepository());
+
   const [locale, setLocaleState] = useState<Locale>('en-US');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -70,12 +83,12 @@ export function I18nProvider({
   };
 
   const t = (key: string): string => {
-    const translation = translationsRepository.getStaticTranslation(key, locale);
+    const translation = resolvedRepository.getStaticTranslation(key, locale);
     return translation || key;
   };
 
   const tValue = (key: string): any => {
-    return translationsRepository.getStaticValue(key, locale);
+    return resolvedRepository.getStaticValue(key, locale);
   };
 
   return (

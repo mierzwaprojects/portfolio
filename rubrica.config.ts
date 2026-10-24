@@ -1,0 +1,16 @@
+export const rubricalConfig = {
+  siteName: "Matheus Mierzwa",
+  siteUrl: "https://www.mmlo.com.br",
+  siteDescription: "AI Enablement Lead e Tech Lead Front-end. Transformo skills de IA em sistemas internos usados todos os dias, com React, TypeScript, Node.js, Convex e Keycloak. Projetos, artigos e serviços.",
+  authorName: "Matheus Mierzwa",
+  authorEmail: "",
+  twitterHandle: "matheusmierzwa",
+  lang: "pt-BR",
+  seoHomeTitle: "Matheus Mierzwa | AI Enablement Lead & Tech Lead Front-end",
+  seoHomeDescription: "Construo sistemas de ponta a ponta e lidero a área de AI Enablement da InBot: skills, agentes e sistemas internos em produção. Tech Lead Front-end com React, TypeScript e Convex.",
+  rssTitle: "Matheus Mierzwa",
+  rssDescription: "AI Enablement Lead e Tech Lead Front-end. Transformo skills de IA em sistemas internos usados todos os dias, com React, TypeScript, Node.js, Convex e Keycloak. Projetos, artigos e serviços.",
+  ogImageUrl: "https://i.postimg.cc/65bvTHHJ/og-image-port-math-100.jpg",
+  fontSans: "Chakra Petch",
+  fontMono: "Chakra Petch",
+};
