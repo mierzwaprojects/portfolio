@@ -50,6 +50,7 @@ export const create = mutation({
       v.object({ 'ptBR': v.string(), 'enUS': v.optional(v.string()) }),
     ),
     orderIndex: v.optional(v.number()),
+    category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const { userId } = await requireRole(ctx, ['root', 'admin', 'content-editor']);
@@ -83,6 +84,7 @@ export const update = mutation({
       v.object({ 'ptBR': v.string(), 'enUS': v.optional(v.string()) }),
     ),
     orderIndex: v.optional(v.number()),
+    category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     await requireRole(ctx, ['root', 'admin', 'content-editor']);
@@ -112,6 +114,7 @@ export const createWithAvatar = mutation({
     textTranslations: v.optional(v.object({ ptBR: v.string(), enUS: v.optional(v.string()) })),
     avatarStorageId: v.optional(v.id('_storage')),
     avatarFileSize: v.optional(v.number()),
+    category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const { userId } = await requireRole(ctx, ['root', 'admin', 'content-editor']);
@@ -147,6 +150,7 @@ export const createWithAvatar = mutation({
       textTranslations: args.textTranslations,
       imageId: imageId as any,
       showOnHome: false,
+      ...(args.category?.trim() ? { category: args.category.trim() } : {}),
       createdAt: now,
     });
 

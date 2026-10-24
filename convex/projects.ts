@@ -5,6 +5,7 @@ import { markPendingChanges } from './publishStatus';
 import { logAudit } from './audit';
 import { requirePlugin, isPluginEnabled } from './plugins';
 import { softDeleteDoc, restoreDoc } from './lib/softDelete';
+import { caseStudyValidator, caseStudyTranslationsValidator, categoryTranslationsValidator } from './lib/caseStudy';
 
 export const list = query({
   args: { tag: v.optional(v.string()), includeDeleted: v.optional(v.boolean()) },
@@ -141,17 +142,10 @@ export const create = mutation({
     demoLink: v.optional(v.string()),
     githubLink: v.optional(v.string()),
     slug: v.optional(v.string()),
-    caseStudy: v.optional(v.object({
-      problem: v.string(),
-      solution: v.string(),
-      results: v.string(),
-      metrics: v.array(v.object({ label: v.string(), value: v.string(), icon: v.optional(v.string()) })),
-      testimonial: v.optional(v.object({ text: v.string(), author: v.string(), role: v.optional(v.string()) })),
-    })),
-    caseStudyTranslations: v.optional(v.object({
-      ptBR: v.optional(v.object({ problem: v.string(), solution: v.string(), results: v.string() })),
-      enUS: v.optional(v.object({ problem: v.string(), solution: v.string(), results: v.string() })),
-    })),
+    caseStudy: v.optional(caseStudyValidator),
+    caseStudyTranslations: v.optional(caseStudyTranslationsValidator),
+    category: v.optional(v.string()),
+    categoryTranslations: v.optional(categoryTranslationsValidator),
     orderIndex: v.number(),
   },
   handler: async (ctx, args) => {
@@ -186,17 +180,10 @@ export const update = mutation({
     demoLink: v.optional(v.string()),
     githubLink: v.optional(v.string()),
     slug: v.optional(v.string()),
-    caseStudy: v.optional(v.object({
-      problem: v.string(),
-      solution: v.string(),
-      results: v.string(),
-      metrics: v.array(v.object({ label: v.string(), value: v.string(), icon: v.optional(v.string()) })),
-      testimonial: v.optional(v.object({ text: v.string(), author: v.string(), role: v.optional(v.string()) })),
-    })),
-    caseStudyTranslations: v.optional(v.object({
-      ptBR: v.optional(v.object({ problem: v.string(), solution: v.string(), results: v.string() })),
-      enUS: v.optional(v.object({ problem: v.string(), solution: v.string(), results: v.string() })),
-    })),
+    caseStudy: v.optional(caseStudyValidator),
+    caseStudyTranslations: v.optional(caseStudyTranslationsValidator),
+    category: v.optional(v.string()),
+    categoryTranslations: v.optional(categoryTranslationsValidator),
     orderIndex: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
