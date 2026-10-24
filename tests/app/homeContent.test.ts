@@ -65,3 +65,17 @@ describe("highlightNumbers", () => {
     expect(marked("o site 2026, o InTable 2.0 com acessibilidade WCAG")).toEqual([]);
   });
 });
+
+import { pickHomeTestimonials } from "@/utils/homeContent";
+
+describe("pickHomeTestimonials", () => {
+  it("keeps only the ones marked for the home when at least one is marked", () => {
+    const list = [{ name: "a", showOnHome: true }, { name: "b" }, { name: "c", showOnHome: true }];
+    expect(pickHomeTestimonials(list).map(t => t.name)).toEqual(["a", "c"]);
+  });
+
+  it("keeps everything when nothing is marked (old data)", () => {
+    const list = [{ name: "a" }, { name: "b", showOnHome: false }];
+    expect(pickHomeTestimonials(list).map(t => t.name)).toEqual(["a", "b"]);
+  });
+});

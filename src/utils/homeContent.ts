@@ -38,3 +38,11 @@ export function highlightNumbers(text: string): TextSegment[] {
   if (last < text.length) segments.push({ text: text.slice(last), highlight: false });
   return segments;
 }
+
+/**
+ * Depoimentos da home: só os marcados "mostrar na home". Se nenhum estiver marcado
+ * (dados antigos), mostra todos, como antes.
+ */
+export function pickHomeTestimonials<T extends { showOnHome?: boolean }>(list: T[]): T[] {
+  return list.some(t => t.showOnHome === true) ? list.filter(t => t.showOnHome === true) : list;
+}

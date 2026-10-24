@@ -1,3 +1,4 @@
+import { pickHomeTestimonials } from "@/utils/homeContent";
 import {
   HomeRepository,
   ContactInfo,
@@ -60,7 +61,7 @@ export class StaticHomeRepository implements HomeRepository {
       if (!response.ok) return [];
       const data = await response.json();
       const list = Array.isArray(data?.testimonials) ? data.testimonials : [];
-      return list.map(mapTestimonial);
+      return pickHomeTestimonials(list).map(mapTestimonial);
     } catch (error) {
       console.error("Error loading static about data:", error);
       return [];
