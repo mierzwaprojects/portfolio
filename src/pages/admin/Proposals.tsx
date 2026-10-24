@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearch } from "wouter";
 import { DeleteConfirmDialog } from "@/components/admin/DeleteConfirmDialog";
 import { AdminLayout } from "./Dashboard";
 import { Button } from "@/components/ui/button";
@@ -19,97 +20,9 @@ import { DEFAULT_RESCISION_POLICY } from "@/constants/rescisionPolicy";
 import { toast } from "sonner";
 import { printContractPDF } from "@/utils/contractPDF";
 import { useIsRoot } from "@/hooks/useIsRoot";
+import { buildProposalPrompt } from "@/utils/proposalPrompt";
 
 const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;
-
-const AI_PROMPT = `## INFORMAÇÕES DO PROJETO
-- **Nome do Cliente:** [NOME DO CLIENTE]
-- **Slug (Identificador Único):** [SLUG_DO_PROJETO]
-- **Objetivo Principal do Projeto:** [DESCRIÇÃO CLARA DO QUE O CLIENTE QUER ALCANÇAR]
-- **Escopo Inicial (Lista de Requisitos):** [LISTA DE REQUISITOS E FUNCIONALIDADES]
-- **Métodos de Pagamento Sugeridos:** [LISTA DE OPÇÕES DE PAGAMENTO]
-- **Condições Contratuais Específicas:** [LISTA DE CONDIÇÕES OU REGRAS DE REVISÃO]
-
----
-
-### 1. Papel (Role Prompting)
-
-Você é um **Especialista em Propostas Comerciais de Tecnologia**, com a função de Arquiteto de Soluções e Tech Lead Frontend Sênior. Sua missão é gerar propostas comerciais completas, realistas e altamente persuasivas, no formato JSON, para projetos de desenvolvimento e consultoria.
-
-**Seu Perfil Profissional (a ser considerado no orçamento e cronograma):**
-"Sou Arquiteto de Soluções e Tech Lead Frontend com mais de 4 anos de experiência liderando transformações digitais. Minha expertise vai além de código — desenho arquiteturas escaláveis, defino padrões técnicos e conduzo decisões estratégicas que impactam produtos inteiros. Especializado em React, TypeScript e infraestrutura moderna, tenho um histórico comprovado em revitalizar plataformas críticas, arquitetar sistemas complexos de autenticação (Keycloak), implementar CI/CD do zero, e integrar IA de forma inteligente em interfaces. Lidero equipes técnicas com foco em inovação, qualidade e escalabilidade — transformando desafios de negócio em soluções digitais robustas e elegantes."
-
-**Personalidade:** Consultivo, preciso, analítico e focado em resultados de negócio.
-
-### 2. Instruções (Chain of Thought Prompting)
-
-Siga rigorosamente os passos abaixo para gerar a proposta:
-
-1.  **Análise de Requisitos**: Avalie o \`Objetivo Principal\` e o \`Escopo Inicial\` fornecidos pelo usuário.
-2.  **Definição de Escopo e Cronograma**:
-    *   Crie uma lista detalhada de \`scope\` (mínimo de 5 itens) que reflita as perspectivas realistas de desenvolvimento e a abordagem de um profissional sênior (foco em arquitetura, escalabilidade e qualidade). **O escopo deve ser claro o suficiente para evitar ambiguidade contratual.**
-    *   Crie um \`timeline\` realista (mínimo de 4 etapas) com períodos em semanas, refletindo a complexidade do projeto. **O cronograma deve ser compatível com o escopo.**
-3.  **Base de Precificação (Valor de Mercado - VM)**:
-    *   Use a tabela abaixo como referência para estimar o Valor de Mercado (VM) do projeto na região metropolitana de São Paulo, considerando o perfil de **Freelancer Sênior/Arquiteto que trabalha sozinho**.
-    *   **O VM deve ser uma estimativa realista e não deve ser o valor final da proposta.**
-
-| Tipo de Projeto | Descrição | Duração Média (Meses) | VM Estimado (R$) |
-| :--- | :--- | :--- | :--- |
-| **Front-end Simples** | Landing Page interativa (React/TS) com formulário e integração de API simples. | 1 | 25.000 - 40.000 |
-| **Front-end Complexo** | Dashboard de visualização de dados (5-7 telas) com autenticação e lógica de estado complexa. | 2 | 60.000 - 90.000 |
-| **Refatoração UI/UX** | Refatoração completa de Front-end de plataforma existente (cerca de 10 telas). | 2-3 | 80.000 - 120.000 |
-| **Full-stack Simples** | Sistema de gestão de conteúdo (CRUD) para uso interno (até 5 usuários), com autenticação básica. | 2-3 | 90.000 - 130.000 |
-| **Full-stack Médio** | E-commerce simples (vitrine, carrinho, checkout) com integração de pagamento e frete. | 3-4 | 130.000 - 180.000 |
-| **Plataforma CRM Básico** | Módulo de gestão de leads (CRM) com 3 perfis de acesso e relatórios básicos. | 4-5 | 180.000 - 250.000 |
-| **MVP SaaS (Funcionalidade Única)** | Plataforma de assinatura (MVP) com funcionalidade central e gestão de usuários/planos. | 5-6 | 250.000 - 350.000 |
-| **Consultoria Arquitetural** | Análise, desenho e documentação de nova arquitetura de micro-serviços (sem implementação). | 1-2 | 50.000 - 80.000 |
-| **Integração Complexa** | Implementação de sistema de autenticação (Keycloak/Auth0) e integração com múltiplos serviços. | 2-3 | 70.000 - 110.000 |
-| **Projeto Longo/Complexo** | Desenvolvimento de plataforma customizada (Full-stack) com alta complexidade e foco em escalabilidade. | 6+ | Acima de 350.000 |
-
-4.  **Cálculo de Investimento (REGRA OBRIGATÓRIA)**:
-    *   Estime o valor total do projeto de forma realista, considerando complexidade, escopo e duração, com base na tabela acima.
-    *   Calcule o \`investment_value\` final aplicando obrigatoriamente um desconto de **75% abaixo do valor de mercado** (\`VM * 0.25\`). O valor deve ser um número decimal (float).
-5.  **Formatação JSON**: Gere o JSON final, garantindo que todos os campos obrigatórios (\`client_name\`, \`slug\`, \`scope\`, \`timeline\`, \`investment_value\`) estejam preenchidos. Use o formato ISO date para \`created_at\` e YYYY-MM-DD para \`delivery_date\`.
-
-### 3. Ferramentas
-
-Você tem acesso a uma **calculadora interna** para realizar o cálculo do investimento e do desconto de 30%.
-
-### 4. Contexto (Emotion Prompting)
-
-O sucesso desta proposta é crucial para a aquisição de um cliente de alto valor, o que impactará diretamente a reputação e o crescimento da sua carreira como especialista. A precisão e a elegância da sua resposta são a chave para fechar o negócio. **A proposta deve soar profissional, executiva e juridicamente defensável.**
-
-### 5. Regras Específicas (Efeito Lost in the Middle)
-
-*   **A saída DEVE ser estritamente um objeto JSON válido**, sem qualquer texto introdutório, explicativo ou de conclusão antes ou depois do JSON. **NUNCA retorne texto fora do JSON.**
-*   **NUNCA use comentários, markdown ou explicações** na saída final.
-*   **NUNCA invente tecnologias irreais ou prazos fantasiosos.**
-*   O JSON deve seguir exatamente a estrutura definida abaixo.
-*   O campo \`investment_value\` deve ser um número (float ou integer), não uma string com moeda.
-*   O campo \`rescision_policy\` deve ser preenchido com um texto padrão de política de rescisão, caso o usuário não forneça um.
-
-**Estrutura JSON Obrigatória:**
-
-\`\`\`json
-{
-  "title": "string (opcional)",
-  "client_name": "string (obrigatório)",
-  "slug": "string (obrigatório, único)",
-  "created_at": "string ISO date (opcional)",
-  "objective": "string (opcional)",
-  "scope": ["array", "de", "strings"],
-  "timeline": [
-    { "step": "string", "period": "string" }
-  ],
-  "delivery_date": "YYYY-MM-DD (opcional)",
-  "investment_value": 0,
-  "payment_methods": ["array", "de", "strings"],
-  "conditions": ["array", "de", "strings"],
-  "password": "string deve ter 8 caracteres aleatorios, sem simbolos especiais",
-  "rescision_policy": "STRING, sempre deve vir vazio"
-}
-\`\`\`
-`;
 
 function DownloadContractButton({ proposal }: { proposal: any }) {
   const [loading, setLoading] = useState(false);
@@ -153,7 +66,7 @@ function DownloadContractButton({ proposal }: { proposal: any }) {
     <Button
       variant="ghost"
       size="icon"
-      className="h-8 w-8 text-gray-400 hover:text-white hover:bg-white/10"
+      className="h-8 w-8 text-foreground/65 hover:text-foreground-strong hover:bg-foreground/10"
       onClick={handleDownload}
       disabled={loading || !acceptanceRaw}
       title="Baixar contrato"
@@ -167,6 +80,7 @@ export default function AdminProposals() {
   const isRoot = useIsRoot();
   const [includeDeleted, setIncludeDeleted] = useState(false);
   const proposalsData = useQuery(api.proposals.listAdmin, { filter: "all", includeDeleted: isRoot && includeDeleted });
+  const contactInfo = useQuery(api.contactInfo.get);
   const proposals = proposalsData ?? [];
   const isLoading = proposalsData === undefined;
 
@@ -176,7 +90,15 @@ export default function AdminProposals() {
   const permanentDeleteProposal = useMutation(api.proposals.permanentDelete);
   const restoreProposal = useMutation(api.proposals.restore);
 
+  const search = useSearch();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Atalhos "Novo ..." do painel/command palette chegam com ?create=true (issue #56)
+  useEffect(() => {
+    if (search.includes("create=true")) {
+      setIsModalOpen(true);
+    }
+  }, [search]);
   const [isJsonImportModalOpen, setIsJsonImportModalOpen] = useState(false);
   const [editingProposal, setEditingProposal] = useState<any | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name?: string } | null>(null);
@@ -499,7 +421,7 @@ export default function AdminProposals() {
     <AdminLayout>
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground-strong flex items-center gap-2">
             <span className="text-neon-purple">📄</span> Propostas Comerciais
           </h1>
           <div className="flex flex-wrap gap-2">
@@ -509,7 +431,7 @@ export default function AdminProposals() {
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm border transition-colors ${
                   includeDeleted
                     ? 'border-red-500/50 bg-red-500/10 text-red-400'
-                    : 'border-white/10 bg-white/5 text-gray-400 hover:text-white'
+                    : 'border-foreground/10 bg-foreground/5 text-foreground/65 hover:text-foreground-strong'
                 }`}
               >
                 <RotateCcw className="w-3.5 h-3.5" />
@@ -520,12 +442,12 @@ export default function AdminProposals() {
               <DialogTrigger asChild>
                 <Button
                   variant="outline"
-                  className="bg-background hover:bg-background/90 text-white border-white/20 text-xs sm:text-sm"
+                  className="bg-background hover:bg-background/90 text-foreground-strong border-foreground/20 text-xs sm:text-sm"
                 >
                   <Upload className="w-4 h-4 sm:mr-2" /> <span className="hidden sm:inline">Importar JSON</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-card border-white/10 max-w-2xl w-[calc(100vw-2rem)] sm:w-full max-h-[85vh] overflow-y-scroll text-white">
+              <DialogContent className="bg-card border-foreground/10 max-w-2xl w-[calc(100vw-2rem)] sm:w-full max-h-[85vh] overflow-y-scroll text-foreground-strong">
                 <DialogHeader>
                   <DialogTitle className="text-xl font-bold">
                     Importar Proposta via JSON
@@ -535,8 +457,8 @@ export default function AdminProposals() {
                   </VisuallyHidden>
                 </DialogHeader>
 
-                <div className="rounded-md border border-white/10 bg-white/5 p-4 space-y-2">
-                  <p className="text-sm text-gray-300">
+                <div className="rounded-md border border-foreground/10 bg-foreground/5 p-4 space-y-2">
+                  <p className="text-sm text-foreground/90">
                     Use o prompt abaixo com qualquer LLM (ChatGPT, Claude, Gemini) para gerar o JSON da proposta automaticamente.
                     Preencha as informações do cliente no topo do prompt antes de enviar.
                   </p>
@@ -545,7 +467,8 @@ export default function AdminProposals() {
                     size="sm"
                     className="border-neon-purple/50 text-neon-purple hover:bg-neon-purple/10 gap-2"
                     onClick={() => {
-                      navigator.clipboard.writeText(AI_PROMPT).then(() => toast.success("Prompt copiado!"));
+                      const prompt = buildProposalPrompt(contactInfo?.proposalAiContext ?? "");
+                      navigator.clipboard.writeText(prompt).then(() => toast.success("Prompt copiado!"));
                     }}
                   >
                     <Copy className="w-4 h-4" />
@@ -571,12 +494,12 @@ export default function AdminProposals() {
                       />
                       <Button
                         variant="outline"
-                        className="w-full bg-background hover:bg-background/90 text-white border-white/20"
+                        className="w-full bg-background hover:bg-background/90 text-foreground-strong border-foreground/20"
                         onClick={() => document.getElementById('json-upload')?.click()}
                       >
                         <Upload className="w-4 h-4 mr-2" /> Escolher Arquivo JSON
                       </Button>
-                      <p className="text-xs text-gray-500 mt-2">
+                      <p className="text-xs text-foreground/42 mt-2">
                         Selecione um arquivo JSON válido com a estrutura da proposta
                       </p>
                     </div>
@@ -591,7 +514,7 @@ export default function AdminProposals() {
                         value={jsonPasteContent}
                         onChange={(e) => setJsonPasteContent(e.target.value)}
                       />
-                      <p className="text-xs text-gray-500 mt-2">
+                      <p className="text-xs text-foreground/42 mt-2">
                         Cole o conteúdo completo do JSON no campo acima
                       </p>
                     </div>
@@ -622,7 +545,7 @@ export default function AdminProposals() {
                   <Plus className="w-4 h-4 sm:mr-2" /> <span className="hidden sm:inline">Nova Proposta</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-card border-white/10 max-w-2xl w-full max-h-[85vh] flex flex-col text-white p-0 min-h-0">
+              <DialogContent className="bg-card border-foreground/10 max-w-2xl w-full max-h-[85vh] flex flex-col text-foreground-strong p-0 min-h-0">
                 <DialogHeader className="px-6 pt-6 pb-4">
                   <DialogTitle className="text-xl font-bold">
                     {editingProposal ? "Editar Proposta" : "Nova Proposta"}
@@ -710,7 +633,7 @@ export default function AdminProposals() {
                     </div>
                     <ul className="space-y-1">
                       {scopeItems.map((item, index) => (
-                        <li key={index} className="flex items-center justify-between bg-white/5 p-2 rounded text-sm gap-2">
+                        <li key={index} className="flex items-center justify-between bg-foreground/5 p-2 rounded text-sm gap-2">
                           <span className="flex-1 wrap-break-word min-w-0">{item}</span>
                           <button onClick={() => handleRemoveScopeItem(index)} className="text-red-400 hover:text-red-300 shrink-0">
                             <X className="w-4 h-4" />
@@ -739,7 +662,7 @@ export default function AdminProposals() {
                     </div>
                     <ul className="space-y-1">
                       {timelineItems.map((item, index) => (
-                        <li key={index} className="flex items-center justify-between bg-white/5 p-2 rounded text-sm gap-2">
+                        <li key={index} className="flex items-center justify-between bg-foreground/5 p-2 rounded text-sm gap-2">
                           <span className="flex-1 wrap-break-word min-w-0">{item.step} - {item.period}</span>
                           <button onClick={() => handleRemoveTimelineItem(index)} className="text-red-400 hover:text-red-300 shrink-0">
                             <X className="w-4 h-4" />
@@ -761,7 +684,7 @@ export default function AdminProposals() {
                   <div>
                     <Label className="block text-sm mb-1">Valor do Projeto</Label>
                     <div className="relative">
-                      <span className="absolute left-3 top-2.5 text-gray-400 text-sm">R$</span>
+                      <span className="absolute left-3 top-2.5 text-foreground/65 text-sm">R$</span>
                       <Input
                         className="bg-background border-input pl-8"
                         placeholder="0,00"
@@ -784,7 +707,7 @@ export default function AdminProposals() {
                               newConditions[i].checked = e.target.checked;
                               setConditions(newConditions);
                             }}
-                            className="mt-1 rounded border-gray-300 shrink-0"
+                            className="mt-1 rounded border-foreground/80 shrink-0"
                           />
                           <Textarea
                             value={condition.text}
@@ -846,7 +769,7 @@ export default function AdminProposals() {
                         )}
                       </div>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-foreground/42 mt-1">
                       Se definida, o cliente precisará informar esta senha para acessar a proposta.
                     </p>
                   </div>
@@ -860,13 +783,13 @@ export default function AdminProposals() {
                       value={rescisionPolicy}
                       onChange={(e) => setRescisionPolicy(e.target.value)}
                     />
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-foreground/42 mt-1">
                       Esta política será exibida na proposta e deve incluir hipóteses de rescisão, multas ou proporcionalidades, procedimentos e prazos.
                     </p>
                   </div>
                 </div>
 
-                <div className="border-t border-white/10 px-6 py-4 mt-auto flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 gap-2 bg-card">
+                <div className="border-t border-foreground/10 px-6 py-4 mt-auto flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 gap-2 bg-card">
                   <Button variant="ghost" onClick={() => {
                     setIsModalOpen(false);
                     resetForm();
@@ -890,23 +813,23 @@ export default function AdminProposals() {
           </TabsList>
 
           <TabsContent value="all" className="mt-6">
-            <div className="rounded-md border border-white/10 overflow-hidden">
+            <div className="rounded-md border border-foreground/10 overflow-hidden">
               <Table>
-                <TableHeader className="bg-white/5">
-                  <TableRow className="border-white/10 hover:bg-white/5">
-                    <TableHead className="text-gray-300">Cliente</TableHead>
-                    <TableHead className="text-gray-300">Data de Criação</TableHead>
-                    <TableHead className="text-gray-300">Validade</TableHead>
-                    <TableHead className="text-gray-300">Status</TableHead>
-                    <TableHead className="text-gray-300 text-right">Ações</TableHead>
+                <TableHeader className="bg-foreground/5">
+                  <TableRow className="border-foreground/10 hover:bg-foreground/5">
+                    <TableHead className="text-foreground/90">Cliente</TableHead>
+                    <TableHead className="text-foreground/90">Data de Criação</TableHead>
+                    <TableHead className="text-foreground/90">Validade</TableHead>
+                    <TableHead className="text-foreground/90">Status</TableHead>
+                    <TableHead className="text-foreground/90 text-right">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {isLoading ? (
-                    <TableRow><TableCell colSpan={5} className="text-center text-gray-400 py-8">Carregando...</TableCell></TableRow>
+                    <TableRow><TableCell colSpan={5} className="text-center text-foreground/65 py-8">Carregando...</TableCell></TableRow>
                   ) : proposals.filter((p: any) => !p.isAccepted).map((proposal: any) => (
-                    <TableRow key={proposal._id} className={`border-white/10 hover:bg-white/5 ${proposal.deletedAt ? 'opacity-60' : ''}`}>
-                      <TableCell className="font-medium text-white">
+                    <TableRow key={proposal._id} className={`border-foreground/10 hover:bg-foreground/5 ${proposal.deletedAt ? 'opacity-60' : ''}`}>
+                      <TableCell className="font-medium text-foreground-strong">
                         <div className="flex items-center gap-2 flex-wrap">
                           {proposal.clientName}
                           {proposal.deletedAt && (
@@ -917,8 +840,8 @@ export default function AdminProposals() {
                           )}
                         </div>
                       </TableCell>
-                      <TableCell className="text-gray-400">{formatTimestampDate(proposal.createdAt)}</TableCell>
-                      <TableCell className="text-gray-400">{calculateValidUntilTs(proposal.createdAt)}</TableCell>
+                      <TableCell className="text-foreground/65">{formatTimestampDate(proposal.createdAt)}</TableCell>
+                      <TableCell className="text-foreground/65">{calculateValidUntilTs(proposal.createdAt)}</TableCell>
                       <TableCell>
                         <div className="flex flex-col gap-1">
                           {!proposal.deletedAt && (
@@ -926,14 +849,14 @@ export default function AdminProposals() {
                               variant="outline"
                               className={`${getStatus(proposal.createdAt) === "Ativo"
                                   ? "bg-green-500/10 text-green-500 border-green-500/20"
-                                  : "bg-gray-500/10 text-gray-500 border-gray-500/20"
+                                  : "bg-gray-500/10 text-foreground/42 border-foreground/8"
                                 }`}
                             >
                               {getStatus(proposal.createdAt)}
                             </Badge>
                           )}
                           {proposal.version > 1 && (
-                            <span className="text-xs text-gray-500">v{proposal.version}</span>
+                            <span className="text-xs text-foreground/42">v{proposal.version}</span>
                           )}
                         </div>
                       </TableCell>
@@ -954,7 +877,7 @@ export default function AdminProposals() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-gray-400 hover:text-white hover:bg-white/10"
+                            className="h-8 w-8 text-foreground/65 hover:text-foreground-strong hover:bg-foreground/10"
                             onClick={() => handleEdit(proposal)}
                           >
                             <Pencil className="h-4 w-4" />
@@ -970,7 +893,7 @@ export default function AdminProposals() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-gray-400 hover:text-white hover:bg-white/10"
+                            className="h-8 w-8 text-foreground/65 hover:text-foreground-strong hover:bg-foreground/10"
                             onClick={() => handleReload(proposal)}
                           >
                             <RefreshCw className="h-4 w-4" />
@@ -978,7 +901,7 @@ export default function AdminProposals() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-gray-400 hover:text-white hover:bg-white/10"
+                            className="h-8 w-8 text-foreground/65 hover:text-foreground-strong hover:bg-foreground/10"
                             onClick={() => handleCopyLink(proposal.slug)}
                           >
                             <LinkIcon className="h-4 w-4" />
@@ -995,36 +918,36 @@ export default function AdminProposals() {
           </TabsContent>
 
           <TabsContent value="accepted" className="mt-6">
-            <div className="rounded-md border border-white/10 overflow-hidden">
+            <div className="rounded-md border border-foreground/10 overflow-hidden">
               <Table>
-                <TableHeader className="bg-white/5">
-                  <TableRow className="border-white/10 hover:bg-white/5">
-                    <TableHead className="text-gray-300">Cliente</TableHead>
-                    <TableHead className="text-gray-300">Data de Criação</TableHead>
-                    <TableHead className="text-gray-300">Data de Aceite</TableHead>
-                    <TableHead className="text-gray-300">Senha de Acesso</TableHead>
-                    <TableHead className="text-gray-300">Status</TableHead>
-                    <TableHead className="text-gray-300 text-right">Ações</TableHead>
+                <TableHeader className="bg-foreground/5">
+                  <TableRow className="border-foreground/10 hover:bg-foreground/5">
+                    <TableHead className="text-foreground/90">Cliente</TableHead>
+                    <TableHead className="text-foreground/90">Data de Criação</TableHead>
+                    <TableHead className="text-foreground/90">Data de Aceite</TableHead>
+                    <TableHead className="text-foreground/90">Senha de Acesso</TableHead>
+                    <TableHead className="text-foreground/90">Status</TableHead>
+                    <TableHead className="text-foreground/90 text-right">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {proposals.filter((p: any) => p.isAccepted).map((proposal: any) => (
-                    <TableRow key={proposal._id} className="border-white/10 hover:bg-white/5">
-                      <TableCell className="font-medium text-white">
+                    <TableRow key={proposal._id} className="border-foreground/10 hover:bg-foreground/5">
+                      <TableCell className="font-medium text-foreground-strong">
                         {proposal.clientName}
                         <Badge variant="outline" className="ml-2 bg-green-500/10 text-green-500 border-green-500/20 text-xs">
                           Aceita
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-gray-400">{formatTimestampDate(proposal.createdAt)}</TableCell>
-                      <TableCell className="text-gray-400">
+                      <TableCell className="text-foreground/65">{formatTimestampDate(proposal.createdAt)}</TableCell>
+                      <TableCell className="text-foreground/65">
                         {proposal.acceptedAt ? formatTimestampDate(proposal.acceptedAt) : '-'}
                       </TableCell>
-                      <TableCell className="text-gray-400">
+                      <TableCell className="text-foreground/65">
                         {proposal.password ? (
                           <span className="text-yellow-400 text-sm font-medium">Protegida</span>
                         ) : (
-                          <span className="text-gray-500 text-sm">Pública</span>
+                          <span className="text-foreground/42 text-sm">Pública</span>
                         )}
                       </TableCell>
                       <TableCell>
@@ -1036,7 +959,7 @@ export default function AdminProposals() {
                             Aceita
                           </Badge>
                           {proposal.version > 1 && (
-                            <span className="text-xs text-gray-500">v{proposal.version}</span>
+                            <span className="text-xs text-foreground/42">v{proposal.version}</span>
                           )}
                         </div>
                       </TableCell>
@@ -1045,7 +968,7 @@ export default function AdminProposals() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-gray-400 hover:text-white hover:bg-white/10"
+                            className="h-8 w-8 text-foreground/65 hover:text-foreground-strong hover:bg-foreground/10"
                             onClick={() => handleReload(proposal)}
                           >
                             <RefreshCw className="h-4 w-4" />
@@ -1053,7 +976,7 @@ export default function AdminProposals() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-gray-400 hover:text-white hover:bg-white/10"
+                            className="h-8 w-8 text-foreground/65 hover:text-foreground-strong hover:bg-foreground/10"
                             onClick={() => handleCopyLink(proposal.slug)}
                           >
                             <LinkIcon className="h-4 w-4" />

@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { useSiteConfig } from "@/hooks/useSiteConfig";
 
 interface SEOProps {
   title: string;
@@ -15,15 +16,13 @@ export function SEO({
   url,
   type = "website",
 }: SEOProps) {
-  const siteTitle =
-    "Matheus Mierzwa | AI Enablement Lead & Tech Lead Front-end";
-  const defaultDescription =
-    "AI Enablement Lead e Tech Lead Front-end. Transformo skills de IA em sistemas internos usados todos os dias, com React, TypeScript, Node.js, Convex e Keycloak. Projetos, artigos e serviços.";
-  const defaultImage =
-    "https://i.postimg.cc/65bvTHHJ/og-image-port-math-100.jpg";
-  const siteUrl = "https://www.mmlo.com.br";
+  const config = useSiteConfig();
+  const siteTitle = config.site_title;
+  const defaultDescription = config.site_description;
+  const defaultImage = config.og_image_url;
+  const siteUrl = config.site_url;
 
-  const fullTitle = title === siteTitle ? title : `${title} | Matheus Mierzwa`;
+  const fullTitle = !title || title === siteTitle ? siteTitle : `${title} | ${siteTitle}`;
   const metaDescription = description || defaultDescription;
   const metaImage = image
     ? image.startsWith("http")
@@ -50,8 +49,8 @@ export function SEO({
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={metaDescription} />
       <meta property="og:image" content={metaImage} />
-      <meta property="og:site_name" content="Matheus Mierzwa Portfolio" />
-      <meta property="og:locale" content="pt_BR" />
+      <meta property="og:site_name" content={config.site_name} />
+      <meta property="og:locale" content={config.lang.replace("-", "_")} />
 
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
@@ -59,7 +58,7 @@ export function SEO({
       <meta property="twitter:title" content={fullTitle} />
       <meta property="twitter:description" content={metaDescription} />
       <meta property="twitter:image" content={metaImage} />
-      <meta property="twitter:creator" content="@matheusmierzwa" />
+      <meta property="twitter:creator" content={config.twitter_handle ? `@${config.twitter_handle}` : ""} />
     </Helmet>
   );
 }

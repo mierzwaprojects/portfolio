@@ -7,8 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Lock, Loader2 } from "lucide-react";
 import { useLocation } from "wouter";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 
 export default function Login() {
+  const { t } = useTranslation();
   const { isAuthenticated, isLoading: isAuthLoading, roles } = useAuth();
   const { signIn } = useAuthActions();
   const [, setLocation] = useLocation();
@@ -41,7 +43,7 @@ export default function Login() {
       await signIn("password", { email, password, flow: "signIn" });
       // AuthContext + the useEffect above will handle redirect once role resolves
     } catch (err) {
-      setError("Credenciais inválidas. Verifique seu email e senha.");
+      setError(t("auth.invalidCredentials"));
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -52,16 +54,16 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-neon-purple/20 via-black to-black z-0"></div>
 
-      <Card className="w-full max-w-md z-10 border-white/10 bg-background/50 backdrop-blur-xl">
+      <Card className="w-full max-w-md z-10 border-foreground/10 bg-background/50 backdrop-blur-xl">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-4">
             <div className="h-12 w-12 rounded-full bg-neon-purple/10 flex items-center justify-center">
               <Lock className="h-6 w-6 text-neon-purple" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-center text-white">Área Administrativa</CardTitle>
-          <CardDescription className="text-center text-gray-400">
-            Entre com suas credenciais para acessar o painel
+          <CardTitle className="text-2xl font-bold text-center text-foreground-strong">{t("auth.adminArea")}</CardTitle>
+          <CardDescription className="text-center text-foreground/65">
+            {t("auth.enterCredentials")}
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -71,21 +73,21 @@ export default function Login() {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@exemplo.com"
+                placeholder={t("auth.emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-white/5 border-white/10 text-white focus:border-neon-purple/50"
+                className="bg-foreground/5 border-foreground/10 text-foreground-strong focus:border-neon-purple/50"
                 disabled={isLoading}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
+              <Label htmlFor="password">{t("auth.password")}</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="bg-white/5 border-white/10 text-white focus:border-neon-purple/50"
+                className="bg-foreground/5 border-foreground/10 text-foreground-strong focus:border-neon-purple/50"
                 disabled={isLoading}
               />
             </div>
@@ -100,10 +102,10 @@ export default function Login() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Entrando...
+                  {t("auth.signingIn")}
                 </>
               ) : (
-                "Entrar"
+                t("auth.signIn")
               )}
             </Button>
           </CardFooter>

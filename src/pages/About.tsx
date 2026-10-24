@@ -26,7 +26,7 @@ function HighlightedParagraph({ text, className }: { text: string; className?: s
     <p className={className}>
       {highlightNumbers(text).map((segment, i) =>
         segment.highlight ? (
-          <strong key={i} className="text-white font-semibold">
+          <strong key={i} className="text-foreground-strong font-semibold">
             {segment.text}
           </strong>
         ) : (
@@ -100,17 +100,17 @@ export default function About() {
         {/* Resumo profissional: o mesmo texto do "Sobre mim" da home, editado no admin */}
         {professionalParagraphs.length > 0 && (
           <motion.section variants={item}>
-            <h2 className="text-2xl font-bold text-white mb-8 flex items-center font-mono">
+            <h2 className="text-2xl font-bold text-foreground-strong mb-8 flex items-center font-mono">
               <span className="text-neon-purple mr-2">/*</span>{" "}
               {t("about.professional.title")}{" "}
               <span className="text-neon-purple ml-2">*/</span>
             </h2>
-            <div className="rounded-xl border border-white/10 bg-card/50 backdrop-blur-sm p-8 max-w-4xl space-y-5 leading-relaxed">
+            <div className="rounded-xl border border-foreground/10 bg-card/50 backdrop-blur-sm p-8 max-w-4xl space-y-5 leading-relaxed">
               {professionalParagraphs.map((paragraph, idx) => (
                 <HighlightedParagraph
                   key={idx}
                   text={paragraph}
-                  className={idx === 0 ? "text-lg text-gray-200" : "text-base text-gray-400"}
+                  className={idx === 0 ? "text-lg text-foreground" : "text-base text-foreground/65"}
                 />
               ))}
             </div>
@@ -120,7 +120,7 @@ export default function About() {
         {/* Como eu trabalho: princípios editados no admin (homeContent work_principles) */}
         {principles.length > 0 && (
           <motion.section variants={item}>
-            <h2 className="text-2xl font-bold text-white mb-8 flex items-center font-mono">
+            <h2 className="text-2xl font-bold text-foreground-strong mb-8 flex items-center font-mono">
               <span className="text-neon-purple mr-2">/*</span>{" "}
               {t("about.principles.title")}{" "}
               <span className="text-neon-purple ml-2">*/</span>
@@ -129,12 +129,12 @@ export default function About() {
               {principles.map((principle, idx) => (
                 <div
                   key={idx}
-                  className="bg-gradient-to-br from-[#1e1e1e] to-[#121212] p-6 rounded-xl border border-white/5 hover:border-neon-purple/30 transition-colors"
+                  className="bg-gradient-to-br from-foreground/5 to-background p-6 rounded-xl border border-foreground/5 hover:border-neon-purple/30 transition-colors"
                 >
                   <ChevronMark />
-                  <h3 className="font-bold text-lg text-white mb-2">{principle.title}</h3>
+                  <h3 className="font-bold text-lg text-foreground-strong mb-2">{principle.title}</h3>
                   {principle.description && (
-                    <p className="text-sm text-gray-400 leading-relaxed">{principle.description}</p>
+                    <p className="text-sm text-foreground/65 leading-relaxed">{principle.description}</p>
                   )}
                 </div>
               ))}
@@ -144,18 +144,18 @@ export default function About() {
 
         {/* Fora do trabalho: lado pessoal, depois do profissional */}
         <motion.section variants={item}>
-          <h2 className="text-2xl font-bold text-white mb-8 flex items-center font-mono">
+          <h2 className="text-2xl font-bold text-foreground-strong mb-8 flex items-center font-mono">
             <span className="text-neon-purple mr-2">/*</span>{" "}
             {t("about.aboutMe.title")}{" "}
             <span className="text-neon-purple ml-2">*/</span>
           </h2>
 
-          <div className="rounded-xl border border-white/10 bg-card/50 backdrop-blur-sm p-8 relative overflow-hidden group">
+          <div className="rounded-xl border border-foreground/10 bg-card/50 backdrop-blur-sm p-8 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
               <Code className="w-24 h-24 text-neon-purple" />
             </div>
 
-            <div className="relative z-10 space-y-6 text-gray-300 leading-relaxed text-lg">
+            <div className="relative z-10 space-y-6 text-foreground/90 leading-relaxed text-lg">
               <p className="whitespace-pre-wrap">{t("about.aboutMe.text")}</p>
             </div>
           </div>
@@ -163,7 +163,7 @@ export default function About() {
 
         {/* Meu Dia-a-Dia Section */}
         <motion.section variants={item}>
-          <h2 className="text-2xl font-bold text-white mb-8 flex items-center font-mono">
+          <h2 className="text-2xl font-bold text-foreground-strong mb-8 flex items-center font-mono">
             <span className="text-neon-purple mr-2">/*</span>{" "}
             {t("about.dailyRoutine.title")}{" "}
             <span className="text-neon-purple ml-2">*/</span>
@@ -174,12 +174,12 @@ export default function About() {
               {Array.from({ length: 6 }).map((_, i) => (
                 <div
                   key={i}
-                  className="bg-white/5 border border-white/10 rounded-xl animate-pulse"
+                  className="bg-foreground/5 border border-foreground/10 rounded-xl animate-pulse"
                 />
               ))}
             </div>
           ) : dailyRoutine.length === 0 ? (
-            <div className="rounded-xl border border-white/10 bg-card/50 backdrop-blur-sm p-8 text-center text-gray-400">
+            <div className="rounded-xl border border-foreground/10 bg-card/50 backdrop-blur-sm p-8 text-center text-foreground/65">
               {t("about.dailyRoutine.empty")}
             </div>
           ) : (
@@ -188,8 +188,8 @@ export default function About() {
                 <motion.div
                   key={routineItem.id}
                   className={cn(
-                    "relative group cursor-pointer rounded-xl border border-white/10 overflow-hidden",
-                    "bg-gradient-to-br from-[#1e1e1e] to-[#121212]",
+                    "relative group cursor-pointer rounded-xl border border-foreground/10 overflow-hidden",
+                    "bg-gradient-to-br from-foreground/5 to-background",
                     "hover:border-neon-purple/50 transition-all duration-300",
                     getSpanClasses(routineItem.span_size || "1x1")
                   )}
@@ -209,7 +209,7 @@ export default function About() {
                       alt={routineItem.description || ""}
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/40 to-transparent" />
                   </div>
 
                   {/* Tags */}
@@ -217,7 +217,7 @@ export default function About() {
                     {routineItem.tags?.map((tag: string, idx: number) => (
                       <Badge
                         key={idx}
-                        className="bg-neon-purple/80 text-white border-none text-xs backdrop-blur-sm"
+                        className="bg-neon-purple/80 text-primary-foreground border-none text-xs backdrop-blur-sm"
                       >
                         {tag}
                       </Badge>
@@ -227,14 +227,14 @@ export default function About() {
                   {/* Overlay com descrição */}
                   <div
                     className={cn(
-                      "absolute inset-0 bg-black/90 backdrop-blur-sm transition-all duration-300 z-20",
+                      "absolute inset-0 bg-background/90 backdrop-blur-sm transition-all duration-300 z-20",
                       "flex items-center justify-center p-6",
                       hoveredItem === routineItem.id
                         ? "opacity-100 pointer-events-auto"
                         : "opacity-0 pointer-events-none"
                     )}
                   >
-                    <p className="text-white text-sm md:text-base leading-relaxed text-center">
+                    <p className="text-foreground-strong text-sm md:text-base leading-relaxed text-center">
                       {routineItem.description}
                     </p>
                   </div>
@@ -242,8 +242,8 @@ export default function About() {
                   {/* Indicador de hover (mobile) */}
                   {isMobile && hoveredItem !== routineItem.id && (
                     <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
-                      <div className="bg-white/20 backdrop-blur-sm text-center px-3 py-1 rounded-full text-xs text-white">
-                        Toque para Saber Mais
+                      <div className="bg-foreground/20 backdrop-blur-sm text-center px-3 py-1 rounded-full text-xs text-foreground-strong">
+                        {t("about.tapToKnowMore")}
                       </div>
                     </div>
                   )}
@@ -255,7 +255,7 @@ export default function About() {
 
         {/* FAQ Section */}
         <motion.section variants={item}>
-          <h2 className="text-2xl font-bold text-white mb-8 flex items-center font-mono">
+          <h2 className="text-2xl font-bold text-foreground-strong mb-8 flex items-center font-mono">
             <span className="text-neon-purple mr-2">/*</span>{" "}
             {t("about.faq.title")}{" "}
             <span className="text-neon-purple ml-2">*/</span>
@@ -266,7 +266,7 @@ export default function About() {
               {Array.from({ length: 3 }).map((_, i) => (
                 <div
                   key={i}
-                  className="bg-white/5 border border-white/10 rounded-xl p-6 animate-pulse"
+                  className="bg-foreground/5 border border-foreground/10 rounded-xl p-6 animate-pulse"
                 >
                   <div className="h-6 bg-gray-600/30 rounded w-3/4 mb-4" />
                   <div className="h-4 bg-gray-600/30 rounded w-full" />
@@ -274,22 +274,22 @@ export default function About() {
               ))}
             </div>
           ) : faq.length === 0 ? (
-            <div className="rounded-xl border border-white/10 bg-card/50 backdrop-blur-sm p-8 text-center text-gray-400">
+            <div className="rounded-xl border border-foreground/10 bg-card/50 backdrop-blur-sm p-8 text-center text-foreground/65">
               {t("about.faq.empty")}
             </div>
           ) : (
-            <div className="rounded-xl border border-white/10 bg-card/50 backdrop-blur-sm overflow-hidden">
+            <div className="rounded-xl border border-foreground/10 bg-card/50 backdrop-blur-sm overflow-hidden">
               <Accordion type="single" collapsible className="w-full">
                 {faq.map((faqItem, index) => (
                   <AccordionItem
                     key={faqItem.id}
                     value={`faq-${faqItem.id}`}
                     className={cn(
-                      "border-white/10",
+                      "border-foreground/10",
                       index !== faq.length - 1 && "border-b"
                     )}
                   >
-                    <AccordionTrigger className="text-white hover:text-neon-purple px-6 py-4 hover:no-underline">
+                    <AccordionTrigger className="text-foreground-strong hover:text-neon-purple px-6 py-4 hover:no-underline">
                       <div className="flex items-center gap-3">
                         <HelpCircle className="w-5 h-5 text-neon-purple shrink-0" />
                         <span className="text-left font-medium">
@@ -297,7 +297,7 @@ export default function About() {
                         </span>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="px-6 pb-4 text-gray-300 leading-relaxed">
+                    <AccordionContent className="px-6 pb-4 text-foreground/90 leading-relaxed">
                       <p className="whitespace-pre-wrap">{faqItem.answer}</p>
                     </AccordionContent>
                   </AccordionItem>

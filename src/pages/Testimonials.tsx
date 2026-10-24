@@ -20,35 +20,35 @@ const item = {
 };
 
 const CARD_GRADIENTS = [
-  "from-[#1e1e1e] to-[#141414]",
-  "from-[#1a1a2e] to-[#131318]",
-  "from-[#1e1a1e] to-[#141214]",
-  "from-[#1a1e1a] to-[#131513]",
-  "from-[#1e1c18] to-[#141310]",
-  "from-[#181e1e] to-[#111515]",
+  "from-foreground/5 to-background",
+  "from-primary/10 to-background",
+  "from-neon-lime/10 to-background",
+  "from-foreground/10 to-background",
+  "from-primary/5 to-background",
+  "from-neon-lime/5 to-background",
 ];
 
 function SkeletonCard() {
   return (
-    <div className="animate-pulse bg-white/5 rounded-xl p-6 space-y-4 border border-white/5 break-inside-avoid mb-5">
+    <div className="animate-pulse bg-foreground/5 rounded-xl p-6 space-y-4 border border-foreground/5 break-inside-avoid mb-5">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-white/10 flex-shrink-0" />
+        <div className="w-10 h-10 rounded-full bg-foreground/10 flex-shrink-0" />
         <div className="space-y-2 flex-1">
-          <div className="h-3 bg-white/10 rounded w-1/2" />
-          <div className="h-2.5 bg-white/5 rounded w-1/3" />
+          <div className="h-3 bg-foreground/10 rounded w-1/2" />
+          <div className="h-2.5 bg-foreground/5 rounded w-1/3" />
         </div>
       </div>
       <div className="space-y-2">
-        <div className="h-2.5 bg-white/5 rounded w-full" />
-        <div className="h-2.5 bg-white/5 rounded w-5/6" />
-        <div className="h-2.5 bg-white/5 rounded w-4/6" />
+        <div className="h-2.5 bg-foreground/5 rounded w-full" />
+        <div className="h-2.5 bg-foreground/5 rounded w-5/6" />
+        <div className="h-2.5 bg-foreground/5 rounded w-4/6" />
       </div>
     </div>
   );
 }
 
 export default function TestimonialsPage() {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const testimonials = useQuery(api.testimonials.list, {});
   const testimonialsIntakeEnabled = usePlugin("testimonials-intake");
   const [wizardOpen, setWizardOpen] = useState(false);
@@ -67,7 +67,7 @@ export default function TestimonialsPage() {
   return (
     <>
       <SEO
-        title="Depoimentos"
+        title={t("testimonials.title")}
         description="Veja o que clientes e colegas dizem sobre o meu trabalho."
         url="/depoimentos"
       />
@@ -79,14 +79,14 @@ export default function TestimonialsPage() {
       >
         {/* Header */}
         <motion.section variants={item}>
-          <h2 className="text-2xl font-bold text-white mb-3 flex items-center">
+          <h2 className="text-2xl font-bold text-foreground-strong mb-3 flex items-center">
             <MessageSquare className="w-5 h-5 text-neon-purple mr-3" />
-            Depoimentos
+            {t("testimonials.title")}
           </h2>
-          <p className="text-gray-400 text-sm">
-            Experiências de clientes e colaboradores que trabalharam comigo.
+          <p className="text-foreground/65 text-sm">
+            {t("testimonials.subtitle")}
             {!isLoading && resolved.length > 0 && (
-              <span className="ml-2 text-gray-600">
+              <span className="ml-2 text-foreground/25">
                 ({resolved.length}{" "}
                 {resolved.length === 1 ? "depoimento" : "depoimentos"})
               </span>
@@ -104,10 +104,10 @@ export default function TestimonialsPage() {
             </div>
           ) : resolved.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-center">
-              <div className="w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
-                <MessageSquare className="w-6 h-6 text-gray-600" />
+              <div className="w-14 h-14 rounded-xl bg-foreground/5 border border-foreground/10 flex items-center justify-center mb-4">
+                <MessageSquare className="w-6 h-6 text-foreground/25" />
               </div>
-              <p className="text-gray-500 text-sm">Nenhum depoimento publicado ainda.</p>
+              <p className="text-foreground/42 text-sm">{t("testimonials.empty")}</p>
             </div>
           ) : (
             <div className="space-y-10">
@@ -115,7 +115,7 @@ export default function TestimonialsPage() {
                 <div key={group.category ?? "__none"}>
                   {group.category && (
                     <h3 className="text-sm font-mono uppercase tracking-wider text-neon-purple mb-4">
-                      <span className="text-white/40 mr-2">//</span>
+                      <span className="text-foreground-strong/40 mr-2">//</span>
                       {group.category}
                     </h3>
                   )}
@@ -132,15 +132,15 @@ export default function TestimonialsPage() {
                       return (
                         <div
                           key={testimonial._id}
-                          className={`bg-gradient-to-br ${gradient} border border-white/5 rounded-xl p-6 relative overflow-hidden break-inside-avoid mb-5`}
+                          className={`bg-gradient-to-br ${gradient} border border-foreground/5 rounded-xl p-6 relative overflow-hidden break-inside-avoid mb-5`}
                         >
-                          <Quote className="absolute top-5 right-5 w-8 h-8 text-white/[0.04]" />
+                          <Quote className="absolute top-5 right-5 w-8 h-8 text-foreground-strong/[0.04]" />
                           <div className="flex items-center mb-4">
                             {testimonial.imageUrl ? (
                               <img
                                 src={testimonial.imageUrl}
                                 alt={testimonial.name}
-                                className="w-12 h-12 rounded-full object-cover border border-white/10 mr-4 flex-shrink-0"
+                                className="w-12 h-12 rounded-full object-cover border border-foreground/10 mr-4 flex-shrink-0"
                               />
                             ) : (
                               <div className="w-12 h-12 rounded-full bg-neon-purple/20 border border-neon-purple/20 flex items-center justify-center text-neon-purple font-semibold text-sm mr-4 flex-shrink-0">
@@ -148,11 +148,11 @@ export default function TestimonialsPage() {
                               </div>
                             )}
                             <div>
-                              <p className="font-semibold text-white">{testimonial.name}</p>
+                              <p className="font-semibold text-foreground-strong">{testimonial.name}</p>
                               <p className="text-xs text-neon-purple">{testimonial.displayRole}</p>
                             </div>
                           </div>
-                          <p className="text-gray-400 text-sm italic leading-relaxed">
+                          <p className="text-foreground/65 text-sm italic leading-relaxed">
                             &ldquo;{testimonial.displayText}&rdquo;
                           </p>
                         </div>
@@ -173,7 +173,7 @@ export default function TestimonialsPage() {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-neon-purple/40 bg-neon-purple/5 text-neon-purple hover:bg-neon-purple/10 hover:border-neon-purple transition-all text-sm font-medium"
             >
               <Star className="w-4 h-4" />
-              Deixar meu depoimento
+              {t("testimonials.leaveTestimonial")}
             </button>
           </motion.section>
         )}

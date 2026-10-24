@@ -6,7 +6,7 @@ import { AlertCircle, FileText, CheckCircle2, Pen, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import ReactMarkdown from "react-markdown";
 import SignaturePad from "signature_pad";
-import { generateContractContent, ProposalData, AcceptanceData } from "@/utils/contractGenerator";
+import { generateContractContent, applyProposalToTemplate, ProposalData, AcceptanceData } from "@/utils/contractGenerator";
 
 interface ClientData {
   client_name: string;
@@ -24,6 +24,7 @@ interface ContractModalProps {
   sessionToken: string | null;
   onSign: (signatureDataUrl: string) => Promise<void>;
   isSigning?: boolean;
+  templateContent?: string;
 }
 
 export function ContractModal({
@@ -33,7 +34,8 @@ export function ContractModal({
   clientData,
   sessionToken,
   onSign,
-  isSigning = false
+  isSigning = false,
+  templateContent,
 }: ContractModalProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -150,7 +152,10 @@ export function ContractModal({
     accepted_at: new Date().toISOString(),
   };
 
-  const contractContent = generateContractContent(proposal, tempAcceptanceData);
+  const resolvedContent = templateContent
+    ? applyProposalToTemplate(templateContent, proposal, tempAcceptanceData)
+    : null;
+  const contractContent = resolvedContent ? null : generateContractContent(proposal, tempAcceptanceData);
 
   const handleSign = async () => {
     if (!signaturePadRef.current || signaturePadRef.current.isEmpty()) return;
@@ -160,8 +165,8 @@ export function ContractModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col p-0">
-        <DialogHeader className="px-6 pt-6 pb-4 border-b border-white/10">
+      <DialogContent className="max-w-4xl h-[90vh] flex flex-col p-0">
+        <DialogHeader className="px-6 pt-6 pb-4 border-b border-foreground/10 shrink-0">
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <FileText className="w-6 h-6 text-neon-purple" />
             Contrato Eletrônico
@@ -170,19 +175,18 @@ export function ContractModal({
 
         <div
           ref={scrollContainerRef}
-          className="flex-1 overflow-y-auto px-6 py-4"
-          style={{ maxHeight: "calc(90vh - 300px)" }}
+          className="flex-1 overflow-y-auto px-6 py-4 min-h-0"
         >
           <div className="mb-6">
             <Card className="bg-yellow-500/10 border-yellow-500/30">
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" />
+                  <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 mt-0.5 shrink-0" />
                   <div className="space-y-2 text-sm">
-                    <p className="font-semibold text-yellow-400">
+                    <p className="font-semibold text-yellow-700 dark:text-yellow-400">
                       Leia o contrato com atenção antes de assinar
                     </p>
-                    <p className="text-yellow-300/80">
+                    <p className="text-yellow-800/80 dark:text-yellow-300/80">
                       O botão para finalizar e assinar digitalmente encontra-se no final do documento.
                       Recomendamos a leitura completa e atenção especial a todas as cláusulas.
                       Em caso de dúvidas, entre em contato antes de prosseguir.
@@ -195,36 +199,43 @@ export function ContractModal({
 
           <div
             ref={contentRef}
-            className="prose prose-invert prose-headings:text-white prose-p:text-gray-300 prose-strong:text-white prose-ul:text-gray-300 prose-li:text-gray-300 prose-hr:border-white/10 max-w-none prose-p:leading-relaxed prose-p:mb-6 prose-h2:mt-10 prose-h2:mb-5 prose-h3:mt-8 prose-h3:mb-4 prose-ul:my-6 prose-ol:my-6 prose-ul:pl-6 prose-ol:pl-6 prose-li:mb-3 prose-blockquote:border-l-4 prose-blockquote:border-neon-purple prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-400"
+            className="prose dark:prose-invert prose-headings:text-foreground-strong prose-p:text-foreground/90 prose-strong:text-foreground-strong prose-ul:text-foreground/90 prose-li:text-foreground/90 prose-hr:border-foreground/10 max-w-none prose-p:leading-relaxed prose-p:mb-6 prose-h2:mt-10 prose-h2:mb-5 prose-h3:mt-8 prose-h3:mb-4 prose-ul:my-6 prose-ol:my-6 prose-ul:pl-6 prose-ol:pl-6 prose-li:mb-3 prose-blockquote:border-l-4 prose-blockquote:border-neon-purple prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-foreground/65"
           >
-            <ReactMarkdown components={markdownComponents}>{normalizeMarkdown(contractContent.header)}</ReactMarkdown>
-            {contractContent.clauses.map((clause, index) => (
-              <ReactMarkdown key={index} components={markdownComponents}>
-                {normalizeMarkdown(clause)}
-              </ReactMarkdown>
-            ))}
+            {resolvedContent ? (
+              <ReactMarkdown components={markdownComponents}>{normalizeMarkdown(resolvedContent)}</ReactMarkdown>
+            ) : (
+              <>
+                <ReactMarkdown components={markdownComponents}>{normalizeMarkdown(contractContent!.header)}</ReactMarkdown>
+                {contractContent!.clauses.map((clause, index) => (
+                  <ReactMarkdown key={index} components={markdownComponents}>
+                    {normalizeMarkdown(clause)}
+                  </ReactMarkdown>
+                ))}
+              </>
+            )}
           </div>
 
           {/* Canvas de assinatura manuscrita */}
-          <div className="mt-8 pt-8 border-t border-white/10">
+          <div className="mt-8 pt-8 border-t border-foreground/10">
             <Card className="bg-card/50 backdrop-blur-sm border-neon-purple/30">
               <CardContent className="p-6 space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                   <Pen className="w-5 h-5 text-neon-purple" />
                   <h3 className="text-lg font-bold">Sua Assinatura Manuscrita</h3>
                 </div>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-foreground/65">
                   Assine com o mouse ou toque na área abaixo. A imagem será incorporada ao contrato PDF.
                 </p>
 
-                <div className="relative rounded-md border border-white/20 bg-white" style={{ height: 120 }}>
+                <div className="relative rounded-md border border-foreground/20 bg-white" style={{ height: 120 }}>
                   <canvas
                     ref={canvasRef}
                     style={{ width: "100%", height: "100%", borderRadius: "6px", display: "block", cursor: "crosshair" }}
                   />
                   {isSignatureEmpty && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <span className="text-gray-400 text-sm select-none">Assine aqui</span>
+                      {/* A área de assinatura é sempre branca (vira papel no PDF), então o texto usa cinza fixo */}
+                      <span className="text-neutral-500 text-sm select-none">Assine aqui</span>
                     </div>
                   )}
                 </div>
@@ -234,7 +245,7 @@ export function ContractModal({
                     variant="ghost"
                     size="sm"
                     onClick={handleClearSignature}
-                    className="text-gray-400 hover:text-white gap-1"
+                    className="text-foreground/65 hover:text-foreground-strong gap-1"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                     Limpar
@@ -253,7 +264,7 @@ export function ContractModal({
                   <h3 className="text-xl font-bold">Assinatura Digital</h3>
                 </div>
 
-                <div className="space-y-2 text-sm text-gray-300">
+                <div className="space-y-2 text-sm text-foreground/90">
                   <p>Ao clicar em "Assinar Digitalmente", você confirma que:</p>
                   <ul className="list-disc list-inside space-y-1 ml-2">
                     <li>Leu e compreendeu todos os termos deste contrato</li>
@@ -264,7 +275,7 @@ export function ContractModal({
                 </div>
 
                 {isSignatureEmpty && (
-                  <p className="text-sm text-yellow-400 flex items-center gap-1.5">
+                  <p className="text-sm text-yellow-700 dark:text-yellow-400 flex items-center gap-1.5">
                     <AlertCircle className="w-4 h-4 shrink-0" />
                     Desenhe sua assinatura acima para continuar.
                   </p>
@@ -274,12 +285,12 @@ export function ContractModal({
                   <Button
                     onClick={handleSign}
                     disabled={isSigning || isSignatureEmpty}
-                    className="w-full bg-neon-purple hover:bg-neon-purple/90 text-white h-12 text-lg disabled:opacity-50"
+                    className="w-full bg-neon-purple hover:bg-neon-purple/90 text-primary-foreground h-12 text-lg disabled:opacity-50"
                     size="lg"
                   >
                     {isSigning ? (
                       <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-foreground mr-2" />
                         Processando assinatura...
                       </>
                     ) : (

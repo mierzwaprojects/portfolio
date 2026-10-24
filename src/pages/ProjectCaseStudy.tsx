@@ -54,17 +54,17 @@ const narrativeSections = [
   {
     key: "context" as const,
     icon: History,
-    iconColor: "text-gray-300",
-    borderColor: "border-white/15",
-    bgColor: "bg-white/[0.03]",
+    iconColor: "text-foreground/90",
+    borderColor: "border-foreground/15",
+    bgColor: "bg-foreground/[0.03]",
     labelKey: "portfolio.before",
   },
   {
     key: "problem" as const,
     icon: AlertTriangle,
-    iconColor: "text-red-400",
-    borderColor: "border-red-400/30",
-    bgColor: "bg-red-400/5",
+    iconColor: "text-red-600 dark:text-red-400",
+    borderColor: "border-red-600/30 dark:border-red-400/30",
+    bgColor: "bg-red-600/5 dark:bg-red-400/5",
     labelKey: "portfolio.problem",
   },
   {
@@ -86,9 +86,9 @@ const narrativeSections = [
   {
     key: "results" as const,
     icon: TrendingUp,
-    iconColor: "text-green-400",
-    borderColor: "border-green-400/30",
-    bgColor: "bg-green-400/5",
+    iconColor: "text-green-700 dark:text-green-400",
+    borderColor: "border-green-700/30 dark:border-green-400/30",
+    bgColor: "bg-green-700/5 dark:bg-green-400/5",
     labelKey: "portfolio.results",
   },
 ];
@@ -132,8 +132,8 @@ export default function ProjectCaseStudy() {
   if (!project) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <h1 className="text-3xl font-bold text-white">{t("portfolio.projectNotFound")}</h1>
-        <p className="text-gray-400">{t("portfolio.projectNotFoundDescription")}</p>
+        <h1 className="text-3xl font-bold text-foreground-strong">{t("portfolio.projectNotFound")}</h1>
+        <p className="text-foreground/65">{t("portfolio.projectNotFoundDescription")}</p>
         <Link href="/portfolio">
           <Button variant="outline" className="mt-4">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -160,14 +160,14 @@ export default function ProjectCaseStudy() {
       >
         {/* Back link */}
         <Link href="/portfolio">
-          <Button variant="ghost" className="text-gray-400 hover:text-white -ml-4">
+          <Button variant="ghost" className="text-foreground/65 hover:text-foreground-strong -ml-4">
             <ArrowLeft className="mr-2 h-4 w-4" />
             {t("portfolio.backToPortfolio")}
           </Button>
         </Link>
 
         {/* Hero */}
-        <div className="relative rounded-2xl overflow-hidden border border-white/10">
+        <div className="relative rounded-2xl overflow-hidden border border-foreground/10">
           {project.images && project.images.length > 0 ? (
             <img
               src={project.images[0]}
@@ -175,13 +175,13 @@ export default function ProjectCaseStudy() {
               className="w-full h-64 md:h-80 object-cover"
             />
           ) : (
-            <div className="w-full h-64 md:h-80 bg-white/5 flex items-center justify-center text-gray-500">
+            <div className="w-full h-64 md:h-80 bg-foreground/5 flex items-center justify-center text-foreground/42">
               {t("portfolio.noImage")}
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/50 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-            <h1 className="text-3xl md:text-5xl font-bold text-white mb-3">{project.title}</h1>
+            <h1 className="text-3xl md:text-5xl font-bold text-foreground-strong mb-3">{project.title}</h1>
             <div className="flex flex-wrap gap-2 mb-4">
               {project.tags?.map((tag: string) => (
                 <Badge
@@ -196,7 +196,7 @@ export default function ProjectCaseStudy() {
             <div className="flex gap-3">
               {project.demo_link && (
                 <a href={project.demo_link} target="_blank" rel="noopener noreferrer">
-                  <Button size="sm" className="bg-neon-purple hover:bg-neon-purple/80 text-white">
+                  <Button size="sm" className="bg-neon-purple hover:bg-neon-purple/80 text-primary-foreground">
                     <ExternalLink className="mr-2 h-4 w-4" />
                     {t("portfolio.liveDemo")}
                   </Button>
@@ -204,7 +204,7 @@ export default function ProjectCaseStudy() {
               )}
               {project.github_link && (
                 <a href={project.github_link} target="_blank" rel="noopener noreferrer">
-                  <Button size="sm" variant="outline" className="border-white/20 text-white hover:bg-white/10">
+                  <Button size="sm" variant="outline" className="border-foreground/20 text-foreground-strong hover:bg-foreground/10">
                     <Github className="mr-2 h-4 w-4" />
                     {t("portfolio.code")}
                   </Button>
@@ -219,9 +219,9 @@ export default function ProjectCaseStudy() {
           <div className="rounded-xl border border-neon-purple/30 bg-gradient-to-br from-neon-purple/10 to-transparent p-6">
             <div className="flex items-center gap-3 mb-3">
               <UserCog className="h-5 w-5 text-neon-purple shrink-0" />
-              <h2 className="text-lg font-semibold text-white">{t("portfolio.myRole")}</h2>
+              <h2 className="text-lg font-semibold text-foreground-strong">{t("portfolio.myRole")}</h2>
             </div>
-            <p className="text-gray-200 leading-relaxed whitespace-pre-line">{cs.role}</p>
+            <p className="text-foreground leading-relaxed whitespace-pre-line">{cs.role}</p>
           </div>
         )}
 
@@ -241,9 +241,9 @@ export default function ProjectCaseStudy() {
               >
                 <div className="flex items-center gap-3 mb-3">
                   <Icon className={`h-5 w-5 ${iconColor} shrink-0`} />
-                  <h2 className="text-lg font-semibold text-white">{t(labelKey)}</h2>
+                  <h2 className="text-lg font-semibold text-foreground-strong">{t(labelKey)}</h2>
                 </div>
-                <p className="text-gray-300 leading-relaxed whitespace-pre-line">{cs[key]}</p>
+                <p className="text-foreground/90 leading-relaxed whitespace-pre-line">{cs[key]}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -252,7 +252,7 @@ export default function ProjectCaseStudy() {
         {/* Metrics */}
         {cs && cs.metrics && cs.metrics.length > 0 && (
           <div>
-            <h2 className="text-xl font-bold text-white mb-4">{t("portfolio.metrics")}</h2>
+            <h2 className="text-xl font-bold text-foreground-strong mb-4">{t("portfolio.metrics")}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {cs.metrics.map((metric, i) => (
                 <motion.div
@@ -260,13 +260,13 @@ export default function ProjectCaseStudy() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: i * 0.07 }}
-                  className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center text-center gap-2 min-h-[100px]"
+                  className="bg-foreground/5 border border-foreground/10 rounded-xl p-4 flex flex-col items-center justify-center text-center gap-2 min-h-[100px]"
                 >
                   {metric.icon && (
                     <DynamicIcon name={metric.icon} className="h-5 w-5 text-neon-purple shrink-0" />
                   )}
                   <div className="text-2xl font-bold text-neon-purple leading-tight break-words w-full">{metric.value}</div>
-                  <div className="text-xs text-gray-400 leading-snug">{metric.label}</div>
+                  <div className="text-xs text-foreground/65 leading-snug">{metric.label}</div>
                 </motion.div>
               ))}
             </div>
@@ -275,24 +275,24 @@ export default function ProjectCaseStudy() {
 
         {/* Aprendizados */}
         {cs?.learnings?.trim() && (
-          <div className="rounded-xl border border-white/15 bg-white/[0.03] p-6">
+          <div className="rounded-xl border border-foreground/15 bg-foreground/[0.03] p-6">
             <div className="flex items-center gap-3 mb-3">
               <GraduationCap className="h-5 w-5 text-neon-lime shrink-0" />
-              <h2 className="text-lg font-semibold text-white">{t("portfolio.learnings")}</h2>
+              <h2 className="text-lg font-semibold text-foreground-strong">{t("portfolio.learnings")}</h2>
             </div>
-            <p className="text-gray-300 leading-relaxed whitespace-pre-line">{cs.learnings}</p>
+            <p className="text-foreground/90 leading-relaxed whitespace-pre-line">{cs.learnings}</p>
           </div>
         )}
 
         {/* Screenshots carousel */}
         {project.images && project.images.length > 0 && (
           <div>
-            <h2 className="text-xl font-bold text-white mb-4">{t("portfolio.screenshots")}</h2>
+            <h2 className="text-xl font-bold text-foreground-strong mb-4">{t("portfolio.screenshots")}</h2>
             <Carousel className="w-full">
               <CarouselContent>
                 {project.images.map((img: string, idx: number) => (
                   <CarouselItem key={idx} className="md:basis-1/2">
-                    <div className="aspect-video rounded-lg overflow-hidden border border-white/10 relative group">
+                    <div className="aspect-video rounded-lg overflow-hidden border border-foreground/10 relative group">
                       <img
                         src={img}
                         alt={`${project.title} - ${idx + 1}`}
@@ -300,34 +300,34 @@ export default function ProjectCaseStudy() {
                       />
                       <button
                         onClick={() => setExpandedImage({ url: img, index: idx, images: project.images })}
-                        className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                        className="absolute inset-0 bg-background/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
                         aria-label={t("portfolio.expandImage")}
                       >
-                        <div className="bg-background/80 backdrop-blur-sm p-3 rounded-full border border-white/20 hover:border-neon-purple transition-colors">
-                          <ZoomIn className="w-5 h-5 text-white" />
+                        <div className="bg-background/80 backdrop-blur-sm p-3 rounded-full border border-foreground/20 hover:border-neon-purple transition-colors">
+                          <ZoomIn className="w-5 h-5 text-foreground-strong" />
                         </div>
                       </button>
                     </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="left-2 bg-background/50 border-white/10 text-white hover:bg-neon-purple hover:border-neon-purple" />
-              <CarouselNext className="right-2 bg-background/50 border-white/10 text-white hover:bg-neon-purple hover:border-neon-purple" />
+              <CarouselPrevious className="left-2 bg-background/50 border-foreground/10 text-foreground-strong hover:bg-neon-purple hover:border-neon-purple hover:text-primary-foreground" />
+              <CarouselNext className="right-2 bg-background/50 border-foreground/10 text-foreground-strong hover:bg-neon-purple hover:border-neon-purple hover:text-primary-foreground" />
             </Carousel>
           </div>
         )}
 
         {/* Testimonial */}
         {cs?.testimonial && (
-          <div className="border-l-4 border-neon-purple bg-white/5 rounded-r-xl p-6">
-            <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+          <div className="border-l-4 border-neon-purple bg-foreground/5 rounded-r-xl p-6">
+            <h2 className="text-lg font-semibold text-foreground-strong mb-3 flex items-center gap-2">
               <Quote className="h-5 w-5 text-neon-purple" />
               {t("portfolio.testimonial")}
             </h2>
-            <p className="text-gray-300 italic leading-relaxed mb-3">"{cs.testimonial.text}"</p>
+            <p className="text-foreground/90 italic leading-relaxed mb-3">"{cs.testimonial.text}"</p>
             <p className="text-neon-purple font-medium">{cs.testimonial.author}</p>
             {cs.testimonial.role && (
-              <p className="text-gray-500 text-sm">{cs.testimonial.role}</p>
+              <p className="text-foreground/42 text-sm">{cs.testimonial.role}</p>
             )}
           </div>
         )}
@@ -336,17 +336,17 @@ export default function ProjectCaseStudy() {
         {(wizardEnabled || next) && (
           <div className="mt-10 rounded-xl border border-neon-purple/30 bg-gradient-to-br from-neon-purple/10 to-transparent p-6 md:p-8">
             <p className="text-sm font-mono text-neon-purple mb-2">
-              <span className="text-white mr-2">$</span>./contato.sh --projeto
+              <span className="text-foreground-strong mr-2">$</span>./contato.sh --projeto
             </p>
-            <h2 className="text-xl md:text-2xl font-bold text-white">{t("portfolio.ctaTitle")}</h2>
-            <p className="text-gray-400 text-sm mt-1">{t("portfolio.ctaSubtitle")}</p>
+            <h2 className="text-xl md:text-2xl font-bold text-foreground-strong">{t("portfolio.ctaTitle")}</h2>
+            <p className="text-foreground/65 text-sm mt-1">{t("portfolio.ctaSubtitle")}</p>
             <div className="flex flex-wrap gap-3 mt-5">
               {wizardEnabled && (
                 <Button
                   onClick={() => openWizard({ flowType: "project", sourceContext: `case-${params?.slug ?? ""}` })}
                   data-umami-event="case-cta-projeto"
                   data-umami-event-case={params?.slug}
-                  className="bg-neon-purple hover:bg-neon-purple/80 text-black font-semibold"
+                  className="bg-neon-purple hover:bg-neon-purple/80 text-primary-foreground font-semibold"
                 >
                   <MessageSquare className="mr-2 h-4 w-4" />
                   {t("portfolio.ctaProject")}
@@ -357,7 +357,7 @@ export default function ProjectCaseStudy() {
                   href={`/portfolio/${next.slug}`}
                   data-umami-event="case-next"
                   data-umami-event-case={next.slug}
-                  className="inline-flex items-center gap-2 h-9 px-4 rounded-md border border-white/15 text-gray-200 hover:border-neon-lime/50 hover:text-neon-lime transition-colors text-sm"
+                  className="inline-flex items-center gap-2 h-9 px-4 rounded-md border border-foreground/15 text-foreground hover:border-neon-lime/50 hover:text-neon-lime transition-colors text-sm"
                 >
                   {t("portfolio.nextCase")}: <span className="font-semibold">{next.title}</span>
                   <ArrowRight className="h-4 w-4" />
@@ -374,20 +374,20 @@ export default function ProjectCaseStudy() {
           <Dialog open onOpenChange={() => setExpandedImage(null)}>
             <DialogContent
               showCloseButton={false}
-              className="!fixed !inset-2 !max-w-none !w-auto !h-auto !translate-x-0 !translate-y-0 !top-0 !left-0 bg-black/97 border-white/10 p-0 flex flex-col"
+              className="!fixed !inset-2 !max-w-none !w-auto !h-auto !translate-x-0 !translate-y-0 !top-0 !left-0 bg-background/97 border-border p-0 flex flex-col"
             >
               <VisuallyHidden>
                 <span>{t("portfolio.expandImage")}</span>
               </VisuallyHidden>
 
               {/* Controls bar */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 shrink-0">
-                <span className="text-gray-400 text-sm">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-foreground/10 shrink-0">
+                <span className="text-foreground/65 text-sm">
                   {expandedImage.index + 1} {t("portfolio.of")} {expandedImage.images.length}
                 </span>
                 <button
                   onClick={() => setExpandedImage(null)}
-                  className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-full transition-colors"
+                  className="bg-foreground/10 hover:bg-foreground/20 text-foreground-strong p-2 rounded-full transition-colors"
                   aria-label="Fechar"
                 >
                   <LucideIcons.X className="w-5 h-5" />
@@ -409,7 +409,7 @@ export default function ProjectCaseStudy() {
                         const prev = expandedImage.index > 0 ? expandedImage.index - 1 : expandedImage.images.length - 1;
                         setExpandedImage({ ...expandedImage, index: prev, url: expandedImage.images[prev] });
                       }}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full transition-colors"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/60 hover:bg-background/80 text-foreground-strong p-3 rounded-full transition-colors"
                       aria-label={t("portfolio.previousImage")}
                     >
                       <ChevronLeft className="w-6 h-6" />
@@ -419,7 +419,7 @@ export default function ProjectCaseStudy() {
                         const next = expandedImage.index < expandedImage.images.length - 1 ? expandedImage.index + 1 : 0;
                         setExpandedImage({ ...expandedImage, index: next, url: expandedImage.images[next] });
                       }}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/60 hover:bg-background/80 text-foreground-strong p-3 rounded-full transition-colors"
                       aria-label={t("portfolio.nextImage")}
                     >
                       <ChevronRight className="w-6 h-6" />

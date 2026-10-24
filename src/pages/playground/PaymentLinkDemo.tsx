@@ -220,7 +220,7 @@ export default function PaymentLinkDemo() {
             <DialogHeader><DialogTitle>Checkout Simulado</DialogTitle><DialogDescription>Como o cliente veria a página de pagamento</DialogDescription></DialogHeader>
             {previewCheckout && (
               <div className="space-y-4">
-                <div className="p-4 rounded-lg border border-white/10 bg-white/5 text-center">
+                <div className="p-4 rounded-lg border border-foreground/10 bg-foreground/5 text-center">
                   <p className="text-2xl font-bold">R$ {previewCheckout.value.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</p>
                   <p className="text-sm text-muted-foreground">{previewCheckout.description || "Pagamento"}</p>
                   <p className="text-xs text-muted-foreground mt-1">Para: {previewCheckout.customerName}</p>
@@ -238,7 +238,7 @@ export default function PaymentLinkDemo() {
                 )}
                 {previewCheckout.billingType === "CREDIT_CARD" && (
                   <div className="text-center">
-                    <Button onClick={() => toast.success("Pagamento simulado aprovado! No sistema real, seria processado via Asaas/Stripe.")}>Pagar com Cartão (simulado)</Button>
+                    <Button onClick={() => toast.success("Pagamento simulado aprovado! No sistema real, o cartão seria digitado na página segura do Asaas.")}>Pagar com Cartão (simulado)</Button>
                   </div>
                 )}
               </div>

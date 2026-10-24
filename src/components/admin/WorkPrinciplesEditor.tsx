@@ -47,19 +47,19 @@ export function WorkPrinciplesEditor({ savedValue }: { savedValue: unknown }) {
   };
 
   return (
-    <Card className="bg-card border-white/10">
+    <Card className="bg-card border-foreground/10">
       <CardHeader>
-        <CardTitle className="text-white">Princípios de trabalho</CardTitle>
-        <p className="text-sm text-gray-400">
+        <CardTitle className="text-foreground-strong">Princípios de trabalho</CardTitle>
+        <p className="text-sm text-foreground/65">
           Aparecem em "Sobre", na seção "Como eu trabalho". Itens sem título em português não são salvos.
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
-        {rows.length === 0 && <p className="text-sm text-gray-500">Nenhum princípio cadastrado.</p>}
+        {rows.length === 0 && <p className="text-sm text-foreground/42">Nenhum princípio cadastrado.</p>}
         {rows.map((row, index) => (
-          <div key={index} className="rounded-lg border border-white/10 p-4 space-y-3">
+          <div key={index} className="rounded-lg border border-foreground/10 p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono text-gray-500">#{index + 1}</span>
+              <span className="text-xs font-mono text-foreground/42">#{index + 1}</span>
               <div className="flex gap-1">
                 <Button type="button" variant="ghost" size="icon" aria-label="Mover para cima" disabled={index === 0} onClick={() => setRows(l => moveItem(l, index, -1))}>
                   <ArrowUp className="w-4 h-4" />
@@ -74,22 +74,22 @@ export function WorkPrinciplesEditor({ savedValue }: { savedValue: unknown }) {
             </div>
             <div className="grid md:grid-cols-2 gap-3">
               <div className="space-y-2">
-                <Label className="text-white">Título (PT)</Label>
-                <Input value={row.titlePT} onChange={e => update(index, "titlePT", e.target.value)} className="bg-white/5 border-white/10 text-white" />
-                <Label className="text-white">Descrição (PT)</Label>
-                <Textarea value={row.descriptionPT} onChange={e => update(index, "descriptionPT", e.target.value)} className="bg-white/5 border-white/10 text-white" rows={3} />
+                <Label className="text-foreground-strong">Título (PT)</Label>
+                <Input value={row.titlePT} onChange={e => update(index, "titlePT", e.target.value)} className="bg-foreground/5 border-foreground/10 text-foreground-strong" />
+                <Label className="text-foreground-strong">Descrição (PT)</Label>
+                <Textarea value={row.descriptionPT} onChange={e => update(index, "descriptionPT", e.target.value)} className="bg-foreground/5 border-foreground/10 text-foreground-strong" rows={3} />
               </div>
               <div className="space-y-2">
-                <Label className="text-white">Title (EN)</Label>
-                <Input value={row.titleEN} onChange={e => update(index, "titleEN", e.target.value)} className="bg-white/5 border-white/10 text-white" />
-                <Label className="text-white">Description (EN)</Label>
-                <Textarea value={row.descriptionEN} onChange={e => update(index, "descriptionEN", e.target.value)} className="bg-white/5 border-white/10 text-white" rows={3} />
+                <Label className="text-foreground-strong">Title (EN)</Label>
+                <Input value={row.titleEN} onChange={e => update(index, "titleEN", e.target.value)} className="bg-foreground/5 border-foreground/10 text-foreground-strong" />
+                <Label className="text-foreground-strong">Description (EN)</Label>
+                <Textarea value={row.descriptionEN} onChange={e => update(index, "descriptionEN", e.target.value)} className="bg-foreground/5 border-foreground/10 text-foreground-strong" rows={3} />
               </div>
             </div>
           </div>
         ))}
         <div className="flex flex-wrap gap-3">
-          <Button type="button" variant="outline" onClick={() => setRows(l => [...l, emptyRow()])} className="border-white/10 text-white">
+          <Button type="button" variant="outline" onClick={() => setRows(l => [...l, emptyRow()])} className="border-foreground/10 text-foreground-strong">
             <Plus className="w-4 h-4 mr-2" /> Adicionar princípio
           </Button>
           <Button type="button" onClick={handleSave} disabled={saving} className="bg-neon-purple hover:bg-neon-purple/90 text-white">

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
@@ -22,6 +23,7 @@ interface ProposalDialogProps {
 export function ProposalDialog({ open, onOpenChange, proposal, onSave }: ProposalDialogProps) {
     const proposalsData = useQuery(api.proposals.listAdmin, { filter: "all" });
     const proposals = proposalsData ?? [];
+    const templates: any[] = useQuery(api.contractTemplates.list) ?? [];
 
     const createProposal = useMutation(api.proposals.create);
     const updateProposal = useMutation(api.proposals.update);
@@ -35,6 +37,8 @@ export function ProposalDialog({ open, onOpenChange, proposal, onSave }: Proposa
     const [objective, setObjective] = useState("");
     const [deliveryDate, setDeliveryDate] = useState("");
     const [investmentValue, setInvestmentValue] = useState("");
+
+    const [templateId, setTemplateId] = useState<Id<"contractTemplates"> | undefined>(undefined);
 
     // Scope & Timeline
     const [scopeItems, setScopeItems] = useState<string[]>([]);
@@ -63,6 +67,7 @@ export function ProposalDialog({ open, onOpenChange, proposal, onSave }: Proposa
                 setInvestmentValue(proposal.investmentValue?.toString().replace('.', ',') || "");
                 setScopeItems(Array.isArray(proposal.scope) ? proposal.scope : []);
                 setTimelineItems(Array.isArray(proposal.timeline) ? proposal.timeline : []);
+                setTemplateId(proposal.templateId ?? undefined);
 
                 const savedConditions: string[] = proposal.conditions || [];
                 const defaultConditions = [
@@ -82,6 +87,8 @@ export function ProposalDialog({ open, onOpenChange, proposal, onSave }: Proposa
                 ));
             } else {
                 resetForm();
+                const defaultTemplate = templates.find((t: any) => t.isDefault);
+                if (defaultTemplate) setTemplateId(defaultTemplate._id);
             }
         }
     }, [open, proposal]);
@@ -133,6 +140,7 @@ export function ProposalDialog({ open, onOpenChange, proposal, onSave }: Proposa
                     investmentValue: investment,
                     paymentMethods: proposal.paymentMethods ?? [],
                     conditions: selectedConditions,
+                    templateId,
                 });
                 toast.success("Proposta atualizada com sucesso!");
                 onSave();
@@ -150,6 +158,7 @@ export function ProposalDialog({ open, onOpenChange, proposal, onSave }: Proposa
                     paymentMethods: [],
                     conditions: selectedConditions,
                     rescissionPolicy: DEFAULT_RESCISION_POLICY,
+                    templateId,
                 });
                 toast.success("Proposta criada com sucesso!");
                 onSave();
@@ -193,7 +202,7 @@ export function ProposalDialog({ open, onOpenChange, proposal, onSave }: Proposa
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="bg-card border-white/10 max-w-2xl w-full max-h-[85vh] overflow-y-scroll text-white">
+            <DialogContent className="bg-card border-foreground/10 max-w-2xl w-full max-h-[85vh] overflow-y-scroll text-foreground-strong">
                 <DialogHeader>
                     <DialogTitle className="text-xl font-bold">
                         {proposal ? "Editar Proposta" : "Nova Proposta"}
@@ -281,7 +290,7 @@ export function ProposalDialog({ open, onOpenChange, proposal, onSave }: Proposa
                         </div>
                         <ul className="space-y-1">
                             {scopeItems.map((item, index) => (
-                                <li key={index} className="flex items-center justify-between bg-white/5 p-2 rounded text-sm">
+                                <li key={index} className="flex items-center justify-between bg-foreground/5 p-2 rounded text-sm">
                                     <span>{item}</span>
                                     <button onClick={() => handleRemoveScopeItem(index)} className="text-red-400 hover:text-red-300">
                                         <X className="w-4 h-4" />
@@ -310,7 +319,7 @@ export function ProposalDialog({ open, onOpenChange, proposal, onSave }: Proposa
                         </div>
                         <ul className="space-y-1">
                             {timelineItems.map((item, index) => (
-                                <li key={index} className="flex items-center justify-between bg-white/5 p-2 rounded text-sm">
+                                <li key={index} className="flex items-center justify-between bg-foreground/5 p-2 rounded text-sm">
                                     <span>{item.step} - {item.period}</span>
                                     <button onClick={() => handleRemoveTimelineItem(index)} className="text-red-400 hover:text-red-300">
                                         <X className="w-4 h-4" />
@@ -332,7 +341,7 @@ export function ProposalDialog({ open, onOpenChange, proposal, onSave }: Proposa
                     <div>
                         <Label className="block text-sm mb-1">Valor do Projeto</Label>
                         <div className="relative">
-                            <span className="absolute left-3 top-2.5 text-gray-400 text-sm">R$</span>
+                            <span className="absolute left-3 top-2.5 text-foreground/65 text-sm">R$</span>
                             <Input
                                 className="bg-background border-input pl-8"
                                 placeholder="0,00"
@@ -355,7 +364,7 @@ export function ProposalDialog({ open, onOpenChange, proposal, onSave }: Proposa
                                             newConditions[i].checked = e.target.checked;
                                             setConditions(newConditions);
                                         }}
-                                        className="mt-1 rounded border-gray-300"
+                                        className="mt-1 rounded border-foreground/80"
                                     />
                                     <Textarea
                                         value={condition.text}
@@ -371,6 +380,27 @@ export function ProposalDialog({ open, onOpenChange, proposal, onSave }: Proposa
                             ))}
                         </div>
                     </div>
+
+                    {templates.length > 0 && (
+                        <div>
+                            <Label className="block text-sm mb-1">Template de Contrato</Label>
+                            <Select
+                                value={templateId ?? ""}
+                                onValueChange={(v) => setTemplateId(v as Id<"contractTemplates">)}
+                            >
+                                <SelectTrigger className="bg-background border-input w-full">
+                                    <SelectValue placeholder="Selecionar template..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {templates.map((t: any) => (
+                                        <SelectItem key={t._id} value={t._id}>
+                                            {t.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
 
                     <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-4">
                         <Button variant="ghost" onClick={() => {

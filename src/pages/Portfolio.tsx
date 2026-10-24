@@ -117,10 +117,10 @@ export default function Portfolio() {
         className="space-y-8 pb-12"
       >
         <header className="mb-10">
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-3xl font-bold text-foreground-strong">
             {t("portfolio.title")}
           </h1>
-          <p className="text-gray-400 mt-2">{t("portfolio.subtitle")}</p>
+          <p className="text-foreground/65 mt-2">{t("portfolio.subtitle")}</p>
         </header>
 
         {/* Filters */}
@@ -134,8 +134,8 @@ export default function Portfolio() {
                   inline-flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium transition-all duration-300
                   ${
                     activeCategory === category
-                      ? "bg-neon-purple text-white shadow-[0_0_10px_rgba(168,85,247,0.4)]"
-                      : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5"
+                      ? "bg-neon-purple text-primary-foreground shadow-[0_0_10px_color-mix(in_srgb,var(--primary)_40%,transparent)]"
+                      : "bg-foreground/5 text-foreground/65 hover:bg-foreground/10 hover:text-foreground-strong border border-foreground/5"
                   }
                 `}
               >
@@ -156,10 +156,10 @@ export default function Portfolio() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
-                className="group rounded-xl bg-card border border-white/5 overflow-hidden hover:border-neon-purple/50 transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.15)] flex flex-col h-full"
+                className="group rounded-xl bg-card border border-foreground/5 overflow-hidden hover:border-neon-purple/50 transition-all duration-300 hover:shadow-[0_0_20px_color-mix(in_srgb,var(--primary)_15%,transparent)] flex flex-col h-full"
               >
                 <div className="relative h-48 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10 opacity-60 group-hover:opacity-40 transition-opacity" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10 opacity-60 group-hover:opacity-40 transition-opacity" />
                   {project.images && project.images.length > 0 ? (
                     <img
                       src={project.images[0]}
@@ -167,22 +167,22 @@ export default function Portfolio() {
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                   ) : (
-                    <div className="w-full h-full bg-white/5 flex items-center justify-center text-gray-500">
+                    <div className="w-full h-full bg-foreground/5 flex items-center justify-center text-foreground/42">
                       {t("portfolio.noImage")}
                     </div>
                   )}
                   <div className="absolute top-3 right-3 z-20 flex gap-2">
-                    <div className="bg-background/60 backdrop-blur-md p-2 rounded-full border border-white/10 text-white opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0 duration-300">
+                    <div className="bg-background/60 backdrop-blur-md p-2 rounded-full border border-foreground/10 text-foreground-strong opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0 duration-300">
                       <Layers className="w-4 h-4" />
                     </div>
                   </div>
                 </div>
 
                 <div className="p-6 flex flex-col flex-grow">
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-neon-purple transition-colors">
+                  <h3 className="text-xl font-bold text-foreground-strong mb-2 group-hover:text-neon-purple transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-gray-400 text-sm mb-4 line-clamp-2 flex-grow">
+                  <p className="text-foreground/65 text-sm mb-4 line-clamp-2 flex-grow">
                     {project.description}
                   </p>
 
@@ -190,13 +190,13 @@ export default function Portfolio() {
                     {project.tags?.slice(0, 3).map((tag: string) => (
                       <span
                         key={tag}
-                        className="text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-white/5 text-gray-300 border border-white/5"
+                        className="text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-foreground/5 text-foreground/90 border border-foreground/5"
                       >
                         {tag}
                       </span>
                     ))}
                     {project.tags?.length > 3 && (
-                      <span className="text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-white/5 text-gray-300 border border-white/5">
+                      <span className="text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-foreground/5 text-foreground/90 border border-foreground/5">
                         +{project.tags.length - 3}
                       </span>
                     )}
@@ -207,7 +207,7 @@ export default function Portfolio() {
                       <span className="text-xl font-bold text-neon-purple">
                         {project.case_study.metrics[0].value}
                       </span>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-foreground/65">
                         {project.case_study.metrics[0].label}
                       </span>
                     </p>
@@ -222,7 +222,7 @@ export default function Portfolio() {
                         data-umami-event="portfolio-case"
                         data-umami-event-case={project.slug}
                       >
-                        <Button className="w-full bg-neon-purple/10 hover:bg-neon-purple text-neon-purple hover:text-white border border-neon-purple/30 transition-all duration-300 font-mono">
+                        <Button className="w-full bg-neon-purple/10 hover:bg-neon-purple text-neon-purple hover:text-primary-foreground border border-neon-purple/30 transition-all duration-300 font-mono">
                           {t("portfolio.viewCase")}
                         </Button>
                       </Link>
@@ -230,13 +230,13 @@ export default function Portfolio() {
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button
-                        className="w-full bg-white/5 hover:bg-neon-purple hover:text-white text-neon-lime border border-white/10 transition-all duration-300 group-hover:border-neon-purple/50"
+                        className="w-full bg-foreground/5 hover:bg-neon-purple hover:text-primary-foreground text-neon-lime border border-foreground/10 transition-all duration-300 group-hover:border-neon-purple/50"
                         onClick={() => setSelectedProject(project)}
                       >
                         {t("portfolio.details")}
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-2xl bg-background border-white/10 text-white p-0 overflow-hidden max-h-[90vh] flex flex-col">
+                    <DialogContent className="max-w-2xl bg-background border-foreground/10 text-foreground-strong p-0 overflow-hidden max-h-[90vh] flex flex-col">
                       <VisuallyHidden>
                         <DialogTitle>{project.title}</DialogTitle>
                       </VisuallyHidden>
@@ -250,7 +250,7 @@ export default function Portfolio() {
                                 {project.images.map(
                                   (img: string, idx: number) => (
                                     <CarouselItem key={idx}>
-                                      <div className="aspect-video rounded-lg overflow-hidden border border-white/10 relative group/carousel">
+                                      <div className="aspect-video rounded-lg overflow-hidden border border-foreground/10 relative group/carousel">
                                         <img
                                           src={img}
                                           alt={`${project.title} - ${idx + 1}`}
@@ -265,13 +265,13 @@ export default function Portfolio() {
                                               images: project.images,
                                             });
                                           }}
-                                          className="absolute inset-0 bg-black/40 opacity-0 group-hover/carousel:opacity-100 transition-opacity flex items-center justify-center hover:bg-black/50"
+                                          className="absolute inset-0 bg-background/40 opacity-0 group-hover/carousel:opacity-100 transition-opacity flex items-center justify-center hover:bg-background/50"
                                           aria-label={t(
                                             "portfolio.expandImage"
                                           )}
                                         >
-                                          <div className="bg-background/80 backdrop-blur-sm p-3 rounded-full border border-white/20 hover:border-neon-purple transition-colors">
-                                            <ZoomIn className="w-5 h-5 text-white" />
+                                          <div className="bg-background/80 backdrop-blur-sm p-3 rounded-full border border-foreground/20 hover:border-neon-purple transition-colors">
+                                            <ZoomIn className="w-5 h-5 text-foreground-strong" />
                                           </div>
                                         </button>
                                       </div>
@@ -279,20 +279,20 @@ export default function Portfolio() {
                                   )
                                 )}
                               </CarouselContent>
-                              <CarouselPrevious className="left-2 bg-background/50 border-white/10 text-white hover:bg-neon-purple hover:border-neon-purple" />
-                              <CarouselNext className="right-2 bg-background/50 border-white/10 text-white hover:bg-neon-purple hover:border-neon-purple" />
+                              <CarouselPrevious className="left-2 bg-background/50 border-foreground/10 text-foreground-strong hover:bg-neon-purple hover:text-primary-foreground hover:border-neon-purple" />
+                              <CarouselNext className="right-2 bg-background/50 border-foreground/10 text-foreground-strong hover:bg-neon-purple hover:text-primary-foreground hover:border-neon-purple" />
                             </Carousel>
                           ) : (
-                            <div className="text-gray-500">
+                            <div className="text-foreground/42">
                               {t("portfolio.noImages")}
                             </div>
                           )}
                         </div>
 
                         {/* Details Section */}
-                        <div className="p-6 lg:p-8 space-y-6 bg-[#0f0f0f]">
+                        <div className="p-6 lg:p-8 space-y-6 bg-card">
                           <div>
-                            <div className="text-2xl font-bold text-white mb-2">
+                            <div className="text-2xl font-bold text-foreground-strong mb-2">
                               {project.title}
                             </div>
                             <div className="flex flex-wrap gap-2 mt-2">
@@ -308,12 +308,12 @@ export default function Portfolio() {
                             </div>
                           </div>
 
-                          <DialogDescription className="text-gray-300 text-base leading-relaxed whitespace-pre-line">
+                          <DialogDescription className="text-foreground/90 text-base leading-relaxed whitespace-pre-line">
                             {project.long_description || project.description}
                           </DialogDescription>
 
-                          <div className="space-y-3 pt-4 border-t border-white/5">
-                            <h4 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
+                          <div className="space-y-3 pt-4 border-t border-foreground/5">
+                            <h4 className="text-sm font-medium text-foreground/65 uppercase tracking-wider mb-3">
                               {t("portfolio.projectLinks")}
                             </h4>
                             <div className="grid grid-cols-2 gap-3">
@@ -324,7 +324,7 @@ export default function Portfolio() {
                                   rel="noopener noreferrer"
                                   className="w-full"
                                 >
-                                  <Button className="w-full bg-neon-purple hover:bg-neon-purple/80 text-white">
+                                  <Button className="w-full bg-neon-purple hover:bg-neon-purple/80 text-primary-foreground">
                                     <ExternalLink className="mr-2 h-4 w-4" />
                                     {t("portfolio.liveDemo")}
                                   </Button>
@@ -339,7 +339,7 @@ export default function Portfolio() {
                                 >
                                   <Button
                                     variant="outline"
-                                    className="w-full border-white/20 text-white hover:bg-white/10 hover:text-white"
+                                    className="w-full border-foreground/20 text-foreground-strong hover:bg-foreground/10 hover:text-foreground-strong"
                                   >
                                     <Github className="mr-2 h-4 w-4" />
                                     {t("portfolio.code")}
@@ -366,14 +366,14 @@ export default function Portfolio() {
           onOpenChange={open => !open && setExpandedImage(null)}
         >
           <DialogContent
-            className="!max-w-[98vw] !w-[98vw] !h-[98vh] !max-h-[98vh] bg-[#0a0a0a] border-white/10 p-0 overflow-hidden flex flex-col !translate-x-[-50%] !translate-y-[-50%] !top-[50%] !left-[50%]"
+            className="!max-w-[98vw] !w-[98vw] !h-[98vh] !max-h-[98vh] bg-card border-foreground/10 p-0 overflow-hidden flex flex-col !translate-x-[-50%] !translate-y-[-50%] !top-[50%] !left-[50%]"
             showCloseButton={false}
           >
             {expandedImage && (
               <>
-                <DialogHeader className="p-4 border-b border-white/10 flex-shrink-0">
+                <DialogHeader className="p-4 border-b border-foreground/10 flex-shrink-0">
                   <div className="flex items-center justify-between">
-                    <DialogTitle className="text-white">
+                    <DialogTitle className="text-foreground-strong">
                       {t("portfolio.image")} {expandedImage.index + 1}{" "}
                       {t("portfolio.of")} {expandedImage.images.length}
                     </DialogTitle>
@@ -381,7 +381,7 @@ export default function Portfolio() {
                       variant="ghost"
                       size="icon"
                       onClick={() => setExpandedImage(null)}
-                      className="text-white hover:bg-white/10"
+                      className="text-foreground-strong hover:bg-foreground/10"
                       aria-label={t("common.close")}
                     >
                       <X className="w-5 h-5" />
@@ -411,7 +411,7 @@ export default function Portfolio() {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 border-white/20 text-white hover:bg-neon-purple hover:border-neon-purple z-10"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 border-foreground/20 text-foreground-strong hover:bg-neon-purple hover:text-primary-foreground hover:border-neon-purple z-10"
                         onClick={() => {
                           const prevIndex =
                             expandedImage.index > 0
@@ -430,7 +430,7 @@ export default function Portfolio() {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 border-white/20 text-white hover:bg-neon-purple hover:border-neon-purple z-10"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 border-foreground/20 text-foreground-strong hover:bg-neon-purple hover:text-primary-foreground hover:border-neon-purple z-10"
                         onClick={() => {
                           const nextIndex =
                             expandedImage.index <

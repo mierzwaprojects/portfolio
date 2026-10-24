@@ -1,4 +1,4 @@
-# Mudanças de backend: portfólio focado em conversão
+# Mudanças de backend: portfólio focado em conversão (Rubrica)
 
 Branch `feat/home-conversao`. Todas as mudanças são **aditivas**: campos novos e opcionais, nenhum campo removido nem tornado obrigatório. Documentos que já existem continuam válidos, então não há migração de dados.
 
@@ -75,6 +75,34 @@ Antes, o objeto do case era escrito à mão três vezes: no `schema.ts`, no `pro
 
 - Uso: a seção "Como eu trabalho" da página Sobre, editada no admin da Home.
 - O `scripts/fetch-static-data.ts` já copia todas as chaves públicas para `public/data/home.json`, então não precisou mudar.
+
+## 7. `homeContent`: chave pública `home_metrics` (só no Rubrica)
+
+- Arquivo: `convex/homeContent.ts`, `home_metrics` entra em `PUBLIC_HOME_KEYS`.
+- Sem mudança de schema.
+- Formato do valor (até 4 itens):
+
+  ```ts
+  Array<{
+    value: string;
+    label: string;
+    labelTranslations?: { ptBR?: string; enUS?: string };
+  }>
+  ```
+
+- Uso: a faixa de números no topo da home e no começo do currículo. Lista vazia esconde a faixa.
+- Por que só no Rubrica: no portfólio do Matheus, esses números estão fixos nas traduções. No Rubrica eles precisam ser editáveis, então ganharam o editor `src/components/admin/HomeMetricsEditor.tsx`, na aba "Números" do admin da Home.
+
+## 8. Seeds de demonstração (persona Ana Souza)
+
+Os campos novos também vêm com dados de exemplo, para o template sair de fábrica mostrando as seções novas:
+
+| Seed | O que entrou |
+|---|---|
+| `homeContent` | `home_metrics` e `work_principles` |
+| `projects` | `category` e as 4 seções novas do case nos 2 projetos |
+| `resumeItems` | `group` nas skills |
+| `testimonials` | `category` |
 
 ## O que NÃO mudou no backend
 

@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { HelmetProvider } from "react-helmet-async";
 import Home from "./pages/Home";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ThemeApplier } from "./components/ThemeApplier";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { I18nProvider } from "./i18n/context/I18nContext";
 import { Analytics } from "@vercel/analytics/react";
@@ -18,7 +19,9 @@ import { ConvexClientProvider, convex } from "./providers/ConvexClientProvider";
 import { ConvexTranslationService } from "./i18n/implementations/ConvexTranslationService";
 import { Terminal } from "./components/Terminal";
 import { AnimatePresence } from "framer-motion";
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect, useMemo, lazy, Suspense } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { sidebarRepository } from "@/repositories/instances";
 import { PageSkeleton } from "./components/PageSkeleton";
 import { ContactWizardProvider } from "./contexts/ContactWizardContext";
 import { ContactWizardModal } from "./components/ContactWizardModal";
@@ -55,6 +58,9 @@ const AdminPlugins = lazy(() => import("./pages/admin/Plugins"));
 const AdminTestimonials = lazy(() => import("./pages/admin/Testimonials"));
 const AdminLgpdErasure = lazy(() => import("./pages/admin/LgpdErasure"));
 const TestimonialsPage = lazy(() => import("./pages/Testimonials"));
+const AdminSiteConfig = lazy(() => import("./pages/admin/SiteConfig"));
+const AdminContractTemplates = lazy(() => import("./pages/admin/ContractTemplates"));
+const AdminTextos = lazy(() => import("./pages/admin/Textos"));
 const Playground = lazy(() => import("./pages/Playground"));
 const ContactWizardDemo = lazy(() => import("./pages/playground/ContactWizardDemo"));
 const ProposalDemo = lazy(() => import("./pages/playground/ProposalDemo"));
@@ -205,6 +211,18 @@ function Router() {
             allowedRoles={["root", "admin"]}
           />
         </Route>
+        <Route path="/admin/textos">
+          <ProtectedRoute
+            component={AdminTextos}
+            allowedRoles={["root", "admin", "content-editor"]}
+          />
+        </Route>
+        <Route path="/admin/site-config">
+          <ProtectedRoute
+            component={AdminSiteConfig}
+            allowedRoles={["root", "admin"]}
+          />
+        </Route>
         <Route path="/admin/depoimentos">
           <ProtectedRoute
             component={() => <PluginRoute pluginId="testimonials"><AdminTestimonials /></PluginRoute>}
@@ -213,6 +231,12 @@ function Router() {
         </Route>
         <Route path="/admin/lgpd">
           <ProtectedRoute component={AdminLgpdErasure} allowedRoles={["root"]} />
+        </Route>
+        <Route path="/admin/contracts">
+          <ProtectedRoute
+            component={() => <PluginRoute pluginId="contract-templates"><AdminContractTemplates /></PluginRoute>}
+            allowedRoles={["root", "admin"]}
+          />
         </Route>
       </Switch>
       </Suspense>
@@ -320,6 +344,28 @@ function AppContent() {
   const isAdminRoute = location.startsWith("/admin");
   const [terminalOpen, setTerminalOpen] = useState(false);
 
+  const { data: sidebarContact } = useQuery({
+    queryKey: ["sidebar", "contact"],
+    queryFn: () => sidebarRepository.getContactInfo(),
+    staleTime: Infinity,
+  });
+
+  const ownerInfo = useMemo(() => {
+    if (!sidebarContact) return undefined;
+    const slug = (sidebarContact.name ?? "portfolio")
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+    return {
+      name: sidebarContact.name ?? "",
+      slug: slug || "portfolio",
+      role: sidebarContact.role ?? "professional",
+      email: sidebarContact.email,
+      githubUrl: sidebarContact.github_url,
+      linkedinUrl: sidebarContact.linkedin_url,
+    };
+  }, [sidebarContact]);
+
   // Troca de página sempre começa do topo (ex.: "próximo case").
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -344,7 +390,7 @@ function AppContent() {
       <Router />
       <AnimatePresence>
         {terminalOpen && !isAdminRoute && (
-          <Terminal onClose={() => setTerminalOpen(false)} />
+          <Terminal onClose={() => setTerminalOpen(false)} ownerInfo={ownerInfo} />
         )}
       </AnimatePresence>
       <Analytics />
@@ -359,9 +405,10 @@ function App() {
       <ErrorBoundary>
         <ConvexClientProvider>
           <QueryProvider>
+            <ThemeApplier />
             <AuthProvider>
               <I18nProvider translationService={translationService}>
-                <ThemeProvider defaultTheme="dark">
+                <ThemeProvider>
                   <TooltipProvider>
                     <Toaster />
                     <PluginsProvider>
