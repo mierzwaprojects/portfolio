@@ -76,33 +76,39 @@ if (!process.env.VITEST) {
   const client = new ConvexHttpClient(convexUrl);
 
   console.log("Fetching siteTexts from Convex...");
-  const rows = await client.query(api.siteTexts.getAll, {}) as Array<{
-    key: string;
-    ptBR: string;
-    enUS?: string;
-  }>;
+  type Row = { key: string; ptBR: string; enUS?: string };
+  let rows: Row[] = [];
+  try {
+    rows = (await client.query(api.siteTexts.getAll, {})) as Row[];
+  } catch (error) {
+    // Primeiro deploy depois de atualizar: o backend novo ainda não foi publicado
+    // (o `npx convex deploy` roda depois deste script). Segue com os textos do código.
+    console.warn(`! siteTexts indisponível no Convex, usando os textos do código: ${(error as Error).message}`);
+  }
 
-  const ptBRObj = unflattenTranslations(rows.map((r) => ({ key: r.key, value: r.ptBR })));
-  const enUSObj = unflattenTranslations(
-    rows.filter((r) => r.enUS).map((r) => ({ key: r.key, value: r.enUS! }))
-  );
+  if (rows.length > 0) {
+    const ptBRObj = unflattenTranslations(rows.map((r) => ({ key: r.key, value: r.ptBR })));
+    const enUSObj = unflattenTranslations(
+      rows.filter((r) => r.enUS).map((r) => ({ key: r.key, value: r.enUS! }))
+    );
 
-  const translationsDir = join(process.cwd(), "src/i18n/translations");
-  const { ptBR: basePtBR } = await import("../src/i18n/translations/pt-BR");
-  const { enUS: baseEnUS } = await import("../src/i18n/translations/en-US");
-  writeFileSync(
-    join(translationsDir, "pt-BR.ts"),
-    serializeTranslations(mergeTranslations(basePtBR as Tree, ptBRObj as Tree), "ptBR"),
-    "utf-8"
-  );
-  writeFileSync(
-    join(translationsDir, "en-US.ts"),
-    serializeTranslations(mergeTranslations(baseEnUS as Tree, enUSObj as Tree), "enUS"),
-    "utf-8"
-  );
+    const translationsDir = join(process.cwd(), "src/i18n/translations");
+    const { ptBR: basePtBR } = await import("../src/i18n/translations/pt-BR");
+    const { enUS: baseEnUS } = await import("../src/i18n/translations/en-US");
+    writeFileSync(
+      join(translationsDir, "pt-BR.ts"),
+      serializeTranslations(mergeTranslations(basePtBR as Tree, ptBRObj as Tree), "ptBR"),
+      "utf-8"
+    );
+    writeFileSync(
+      join(translationsDir, "en-US.ts"),
+      serializeTranslations(mergeTranslations(baseEnUS as Tree, enUSObj as Tree), "enUS"),
+      "utf-8"
+    );
 
-  console.log(`✓ pt-BR.ts (${rows.length} keys)`);
-  console.log(`✓ en-US.ts (${rows.filter((r) => r.enUS).length} keys)`);
+    console.log(`✓ pt-BR.ts (${rows.length} keys)`);
+    console.log(`✓ en-US.ts (${rows.filter((r) => r.enUS).length} keys)`);
+  }
 
   console.log("Generating key manifest...");
   const srcDir = join(process.cwd(), "src");
