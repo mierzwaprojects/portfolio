@@ -35,6 +35,15 @@ export const enUS = {
       title: "What they say about me",
     },
     hero: {
+      headline: "I build systems end to end and lead the teams that use them.",
+      ctaCases: "See case studies",
+      ctaContact: "Get in touch",
+      metrics: [
+        { value: "~50", label: "skills and automations in production" },
+        { value: "8", label: "areas served by AI Enablement" },
+        { value: "1,800+", label: "support tickets analyzed by AI" },
+        { value: "3h → 13min", label: "one task after an agent" }
+      ],
       description: "I turn AI skills into internal systems teams use every day, from architecture to production.",
       technologies: [
         { name: "React", color: "bg-neon-lime" },
@@ -42,6 +51,17 @@ export const enUS = {
         { name: "Applied AI", color: "bg-neon-purple" },
         { name: "Systems Architecture", color: "bg-neon-purple" }
       ],
+    },
+    cases: {
+      title: " Featured case studies ",
+      viewAll: "see all projects",
+      read: "$ cat case.md",
+    },
+    cta: {
+      title: "Got a system to get off the ground?",
+      subtitle: "Share the context and I'll reply with the next steps.",
+      project: "I have a project",
+      job: "I have a role",
     },
     skills: {
       title: "What I do",

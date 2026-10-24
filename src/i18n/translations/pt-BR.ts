@@ -35,6 +35,15 @@ export const ptBR = {
       title: "O que falam sobre mim",
     },
     hero: {
+      headline: "Construo sistemas de ponta a ponta e lidero os times que usam.",
+      ctaCases: "Ver cases",
+      ctaContact: "Fale comigo",
+      metrics: [
+        { value: "~50", label: "skills e automações em produção" },
+        { value: "8", label: "áreas atendidas pela AI Enablement" },
+        { value: "1.800+", label: "chamados de suporte analisados por IA" },
+        { value: "3h → 13min", label: "uma tarefa depois de um agente" }
+      ],
       description: "Transformo skills de IA em sistemas internos que os times usam todos os dias, da arquitetura à produção.",
       technologies: [
         { name: "React", color: "bg-neon-lime" },
@@ -42,6 +51,17 @@ export const ptBR = {
         { name: "IA Aplicada", color: "bg-neon-purple" },
         { name: "Arquitetura de Sistemas", color: "bg-neon-purple" }
       ],
+    },
+    cases: {
+      title: " Cases em destaque ",
+      viewAll: "ver todos os projetos",
+      read: "$ cat case.md",
+    },
+    cta: {
+      title: "Tem um sistema para tirar do papel?",
+      subtitle: "Conte o contexto e eu respondo com os próximos passos.",
+      project: "Tenho um projeto",
+      job: "Tenho uma vaga",
     },
     skills: {
       title: "O que eu faço",
