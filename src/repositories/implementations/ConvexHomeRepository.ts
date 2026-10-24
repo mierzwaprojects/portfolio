@@ -14,6 +14,7 @@ import {
   mapTranslations,
 } from "../mappers/convexMappers";
 import { api } from "../../../convex/_generated/api";
+import { parseWorkPrinciples, type WorkPrinciple } from "@/utils/aboutContent";
 
 const client = new ConvexHttpClient(import.meta.env.VITE_CONVEX_URL as string);
 
@@ -60,5 +61,10 @@ export class ConvexHomeRepository implements HomeRepository {
     });
     if (!data) return true;
     return (data as any).value !== false;
+  }
+
+  async getWorkPrinciples(): Promise<WorkPrinciple[]> {
+    const data = await client.query(api.homeContent.getByKey, { key: "work_principles" });
+    return parseWorkPrinciples((data as any)?.value);
   }
 }

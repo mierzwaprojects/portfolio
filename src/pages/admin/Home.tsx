@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { useTranslateContent } from "@/i18n/hooks/useTranslateContent";
 import { getChangedTranslatableFields } from "@/i18n/utils/hasTranslatableChanges";
 import { useIsRoot } from "@/hooks/useIsRoot";
+import { WorkPrinciplesEditor } from "@/components/admin/WorkPrinciplesEditor";
 
 export default function AdminHome() {
   const isRoot = useIsRoot();
@@ -196,8 +197,9 @@ export default function AdminHome() {
         </div>
 
         <Tabs defaultValue="about" className="w-full">
-          <TabsList className="bg-white/5 border border-white/10 w-full grid grid-cols-2">
+          <TabsList className="bg-white/5 border border-white/10 w-full grid grid-cols-3">
             <TabsTrigger value="about">Sobre Mim</TabsTrigger>
+            <TabsTrigger value="principles">Princípios</TabsTrigger>
             <TabsTrigger value="availability">Disponibilidade</TabsTrigger>
           </TabsList>
 
@@ -284,6 +286,12 @@ export default function AdminHome() {
                 })}
               </div>
             </div>
+          </TabsContent>
+
+          <TabsContent value="principles" className="space-y-6 mt-6">
+            <WorkPrinciplesEditor
+              savedValue={homeContentList?.find((c: any) => c.key === "work_principles")?.value}
+            />
           </TabsContent>
 
           <TabsContent value="availability" className="space-y-6 mt-6">
