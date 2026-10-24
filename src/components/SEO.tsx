@@ -22,7 +22,9 @@ export function SEO({
   const defaultImage = config.og_image_url;
   const siteUrl = config.site_url;
 
-  const fullTitle = !title || title === siteTitle ? siteTitle : `${title} | ${siteTitle}`;
+  // O título da home (seo_home_title) já vem completo: não leva o nome do site de novo.
+  const isFullTitle = !title || title === siteTitle || title === config.seo_home_title || title.includes(siteTitle);
+  const fullTitle = !title ? siteTitle : isFullTitle ? title : `${title} | ${siteTitle}`;
   const metaDescription = description || defaultDescription;
   const metaImage = image
     ? image.startsWith("http")
