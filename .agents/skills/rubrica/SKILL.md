@@ -24,11 +24,10 @@ RB="python3 .agents/skills/rubrica/scripts/rubrica.py"
 
 O script acha sozinho o projeto (sobe até o `rubrica.config.ts`), o Convex (`VITE_CONVEX_URL` do `.env.local`) e o endereço do site.
 
-**Dev ou produção.** O `.env.local` costuma apontar para o Convex de **desenvolvimento**, e o site no ar usa o de **produção**. Mexer no de dev não muda o site publicado. Para trabalhar no site no ar, peça à pessoa a URL do Convex de produção (no painel do Convex, deployment *Production* → *Settings* → *URL*, ou a `VITE_CONVEX_URL` configurada na Vercel) e rode com ela:
+**Dev ou produção.** O `.env.local` aponta para o Convex de **desenvolvimento** (o site do computador), e o site no ar usa o de **produção**. Mexer no de dev não muda o site publicado. Quando a pessoa pedir algo no site, pergunte se é no site publicado ou no do computador, se não estiver claro.
 
-```bash
-export RUBRICA_CONVEX_URL="https://<deployment-de-producao>.convex.cloud"
-```
+- **Site publicado:** acrescente `--producao` a cada comando (`$RB status --producao`, `$RB textos --producao`...), ou `export RUBRICA_AMBIENTE=producao` uma vez. O endereço vem do `rubrica.json`, gravado pelo `npx create-rubrica publicar`. Se o `status` disser que o projeto não tem esse endereço, peça para a pessoa rodar o `publicar` de novo (ele recupera o endereço) ou use a URL do Convex de produção direto: `export RUBRICA_CONVEX_URL="https://<deployment-de-producao>.convex.cloud"`.
+- **Site do computador:** sem nada a mais. O `status` mostra em `producao` o endereço do site publicado, quando existe.
 
 Códigos de saída: `3` = projeto/Convex não encontrado, `4` = sem login, `5` = sem permissão (repasse à pessoa), `2` = bloqueado pela skill, `7` = rede. Os erros saem em português no stderr: mostre-os, não contorne.
 
@@ -60,7 +59,7 @@ O plano é aplicado do jeito que está. Se a pessoa quiser mudar algum texto, vo
    ```
    python3 .agents/skills/rubrica/scripts/rubrica.py login --email <email-do-admin>
    ```
-   (No Claude Code ela pode digitar `! ` antes do comando, no próprio prompt.) Depois confira com `$RB status`. A sessão renova sozinha e fica em `~/.config/rubrica-skill/`, uma por Convex; nunca mostre esse arquivo. `logout` apaga.
+   Se o projeto já foi publicado, o login pergunta se ela quer entrar no site publicado ou no do computador. Para ir direto ao publicado, acrescente `--producao`. (No Claude Code ela pode digitar `! ` antes do comando, no próprio prompt.) Depois confira com `$RB status` (com `--producao`, se ela entrou no publicado). A sessão renova sozinha e fica em `~/.config/rubrica-skill/`, uma por Convex; nunca mostre esse arquivo. `logout` apaga.
 
 ## Regras de escrita
 - **Leia antes de mudar** e mostre um plano curto (o que muda, antes → depois). Espere o "ok" da pessoa antes de gravar. Toda escrita devolve `antes`/`depois`: confirme com ela.
@@ -115,6 +114,16 @@ O corpo do post é **HTML**. Use só `h2 h3 p ul ol li strong em a code pre bloc
 - Capa de post: `--capa arquivo` ou `--imagem-id <id>`. Imagem no corpo: suba antes e use a `url` no HTML pt-BR e no en-US (alt traduzido).
 - Sempre escreva o `alt`, descritivo e sem "imagem de".
 
+## Propostas
+- `$RB listar propostas [--status all|accepted|pending]` / `$RB ler propostas <slug-ou-id>`. Alterar: `proposals:create` e `proposals:update` (`$RB funcoes --modulo proposals` mostra os `args`).
+- **Proposta aceita não muda** (o servidor recusa): para outra condição, crie uma proposta nova. Cada edição de uma pendente gera uma versão nova.
+- Valores em reais, como número (`4000`, `1250.5`). **`investmentValue` é sempre o valor final**: é o que vai para o contrato e para as formas de pagamento.
+- **Preço de cada item** (opcional): `scopePrices`, uma lista na mesma ordem e com o mesmo tamanho de `scope`, com `null` no item sem preço (`"scope": ["Site", "Logo"], "scopePrices": [4000, 1000]`). Mudou o `scope` (item novo, removido ou fora de ordem)? Mande o `scopePrices` realinhado na mesma chamada: o servidor recusa preços desalinhados. `[]` tira os preços.
+- **Desconto** (opcional): `originalValue`, o valor antes do desconto, maior que `investmentValue`. Na proposta aparece o original riscado, o desconto em R$ e % e o valor final. Para tirar, mande `originalValue: null` (com `giftIndexes: []`, se houver brinde).
+- **Brinde**: `giftIndexes`, as posições (a partir de 0) dos itens do `scope` que saem sem custo. Cada brinde precisa ter preço em `scopePrices` e de um `originalValue`, e a soma dos brindes não pode passar do desconto (`originalValue − investmentValue`). Na proposta, o item aparece com o badge "Brinde", o preço riscado e R$ 0,00.
+- Não invente preço nem desconto: valores vêm da pessoa. Ao propor um desconto, mostre a conta (original, desconto, final) e espere o "ok".
+- `proposals:resetPassword` fica fora (ver Limites).
+
 ## Contatos e o resto
 - `$RB painel`: números, contatos novos e depoimentos pendentes. Bom ponto de partida para "o que tem de novo".
 - `$RB listar <tipo>` / `$RB ler <tipo> <ref>`. Tipos: `posts projetos propostas contatos depoimentos envios curriculo servicos faq rotina checkouts imagens pastas home ia-resumos contratos usuarios`.
@@ -137,3 +146,6 @@ O site é gerado no build da Vercel. Depois de mudanças de conteúdo:
 - `remove` é exclusão reversível (vai para a lixeira; `--lixeira` mostra). `restore` exige papel root.
 - Não mexa em usuários e papéis (`users:*`), checkouts, pagamentos (Asaas) nem `proposals:resetPassword` sem pedido explícito e confirmação: mexem com acesso e dinheiro.
 - Esta skill é para **conteúdo**. Layout, componentes e estilos são código do repositório.
+
+## Quando o Rubrica não faz
+Se a pessoa pedir algo que o Rubrica não suporta, ou algo quebrar (erro fora dos códigos conhecidos, comando que faz diferente do descrito), siga `references/issue.md`: você decide se é **bug** ou **pedido**, procura uma issue parecida, escreve o rascunho sem dados privados e, com o "ok" da pessoa, abre no GitHub do Rubrica com o `gh` ou entrega um link já preenchido.

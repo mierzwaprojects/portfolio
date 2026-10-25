@@ -119,60 +119,26 @@ flowchart TB
 
 <br />
 
-## Pré-requisitos
-
-Antes de começar, você vai precisar de:
-
-- **Node.js 20+** e **git** instalados (pnpm é opcional: o CLI usa npm se você não tiver)
-- Conta no **[Convex](https://convex.dev)** _(gratuita)_ — backend, banco e storage. O CLI abre o login no navegador.
-- Conta no **[Vercel](https://vercel.com)** _(gratuita)_ — hospedagem do site
-- _(Só no caminho manual)_ Conta no **[GitHub](https://github.com)** — para o fork e o deploy contínuo
-- _(Só para as skills de IA)_ **Python 3.8+**
-- _(Opcional)_ Contas no **[OpenRouter](https://openrouter.ai)**, **[Asaas](https://asaas.com)** ou **[Telegram BotFather](https://t.me/BotFather)** — só se for usar as features opcionais
-
-<br />
-
 ## Começando
 
-O caminho mais curto é o CLI `create-rubrica`. Ele cria o projeto, prepara o banco, cria o seu login do painel e publica, sem copiar variável nenhuma.
+Precisa de **Node.js 20+** e **git**, e de contas gratuitas no **[Convex](https://convex.dev)** (banco de dados) e na **[Vercel](https://vercel.com)** (hospedagem). O CLI `create-rubrica` cria o projeto, prepara o banco, cria o seu login do painel e publica, sem copiar variável nenhuma.
 
-```mermaid
-flowchart LR
-    A["1 · Escolhe a cara<br/>no site"] --> B["2 · create<br/>cria o projeto"]
-    B --> C["3 · Preenche<br/>no /admin"]
-    C --> D["4 · Dá a sua<br/>cara ⚠️"]
-    D --> E["5 · publicar<br/>na Vercel"]
-    E --> F["6 · Domínio<br/>próprio"]
-
-    classDef step fill:#F5F2EA,stroke:#4D7C5F,stroke-width:2px,color:#1A1A18
-    classDef highlight fill:#C4664A,stroke:#1A1A18,stroke-width:2px,color:#F5F2EA
-    class A,B,C,E,F step
-    class D highlight
+```bash
+npx create-rubrica@latest meu-portfolio   # cria o projeto
+npm run dev                               # abre em http://localhost:3000 (painel em /login)
+npx create-rubrica publicar               # põe no ar na Vercel
 ```
 
-1. **Escolha a cara no [site do Rubrica](https://userubrica.vercel.app).** No combinador, teste layout, cores, modo, textura e fontes no app funcionando. Na seção **Crie o seu**, preencha os seus dados e copie o comando pronto (nada sai do navegador).
-2. **Cole o comando no terminal.** Ele cria o projeto com as suas escolhas, conecta o Convex (login pelo navegador) e pede só a senha do painel:
-   ```bash
-   npx create-rubrica@latest meu-portfolio --receita <código-do-site>
-   ```
-   Sem o site, `npx create-rubrica@latest meu-portfolio` faz as mesmas perguntas no terminal (no modo **Rápido**, só layout, plugins e identidade).
-3. **Rode e preencha o conteúdo:** `npm run dev` (ou `pnpm dev`), entre em `http://localhost:3000/login` e siga para [o painel admin](#7--preencher-o-conteúdo-no-admin).
-4. **Dê a sua cara** ([veja onde mexer](#8--personalize-o-visual-não-pule)). Não é opcional: é o que separa o seu portfólio de "mais um".
-5. **Publique:** `npx create-rubrica publicar` cria o projeto na Vercel, prepara o banco de produção, cria o admin do site publicado e põe no ar. Rodar de novo só publica.
-6. **Domínio próprio:** [passo a passo](#10--domínio-próprio).
+Ou monte a aparência no [combinador do site](https://userubrica.vercel.app/#combinador) e copie de lá o comando pronto, com as suas escolhas.
 
-### Comandos do CLI
-
-Rode na pasta do projeto. Detalhes no [README do CLI](./cli/README.md).
-
-| Comando | Para quê |
+| Guia | O que tem |
 |---|---|
-| `npx create-rubrica@latest <pasta>` | Cria o projeto (aceita `--receita` do site e opções como `--layout` e `--esquema`) |
-| `npx create-rubrica setup` | Conecta o Convex, gera as chaves de login, cria o admin e os dados iniciais; liga Telegram e Vercel se você quiser |
-| `npx create-rubrica config` | Troca layout, cores, modo, textura, fontes, plugins e identidade depois de criado |
-| `npx create-rubrica publicar` | Põe o site no ar na Vercel (e publica de novo nas próximas vezes) |
-| `npx create-rubrica senha` | Troca a senha do painel e libera o login bloqueado, no site publicado ou no local |
-| `npx create-rubrica@latest update` | Traz a versão nova do Rubrica sem desfazer o que você personalizou |
+| [**Começando**](./docs/guia/comecando.md) | Do zero ao site rodando no computador, e o que preencher no painel |
+| [**Comandos do CLI**](./docs/guia/cli.md) | `create`, `setup`, `config`, `publicar`, `senha` e `update`, com todas as opções |
+| [**Publicar o site**](./docs/guia/publicar.md) | Vercel, o botão Publicar do painel, outro computador e domínio próprio |
+| [**Atualizando o seu Rubrica**](./docs/atualizacao.md) | Versões novas sem perder o que você personalizou |
+
+A documentação também está no [site do Rubrica](https://userubrica.vercel.app/docs), em português e inglês.
 
 <br />
 
@@ -260,7 +226,8 @@ npx convex env set NOME_DA_VAR valor
 | `ASAAS_WEBHOOK_TOKEN` | Confirmação dos pagamentos (o mesmo token cadastrado no webhook do Asaas) |
 | `TELEGRAM_BOT_TOKEN` | Notificações no Telegram |
 | `TELEGRAM_ADMIN_CHAT_ID` | Chat onde as notificações chegam |
-| `VERCEL_DEPLOY_HOOK_URL` | Botão "Publicar" do admin |
+| `VERCEL_TOKEN`, `VERCEL_PROJECT_ID`, `VERCEL_TEAM_ID` | Botão "Publicar" do admin sem GitHub (o `npx create-rubrica publicar` configura) |
+| `VERCEL_DEPLOY_HOOK_URL` | Botão "Publicar" do admin em projeto ligado ao GitHub (tem preferência sobre o token) |
 | `VERCEL_WEBHOOK_SECRET` | Webhook de notificação de deploy |
 
 ### 5 · Rodar em desenvolvimento
@@ -315,7 +282,7 @@ O repositório já vem com a skill **`rubrica`** para Claude Code, Codex e OpenC
   ```bash
   python3 .agents/skills/rubrica/scripts/rubrica.py login --email voce@exemplo.com
   ```
-- A skill usa o Convex do `VITE_CONVEX_URL` do `.env.local`. Para mexer em outro (ex.: produção), defina `RUBRICA_CONVEX_URL`.
+- Por padrão, a skill mexe no site do computador (o Convex do `.env.local`). Depois do `npx create-rubrica publicar`, o login pergunta se você quer entrar no site publicado ou no do computador, e o agente usa `--producao` para mexer no site no ar. Para outro Convex qualquer, defina `RUBRICA_CONVEX_URL`.
 - Onde ela mora: `.agents/skills/rubrica/` (lido pelo Codex e pelo OpenCode) e o atalho `.claude/skills/rubrica` (lido pelo Claude Code). Requer Python 3.8+.
 
 Para escrever conteúdo novo com calma, há skills estrategistas que entrevistam você, escrevem em pt-BR e en-US e entregam um plano que a `rubrica` aplica depois do seu "ok". Todas começam pela sua voz: na primeira vez, o agente manda você para a [entrevista de voz](https://userubrica.vercel.app/voz), onde você responde falando ou digitando (uns 20 minutos, nada sai do navegador) e cola o resultado na conversa.
@@ -358,15 +325,7 @@ A partir daqui, todo `git push` na branch principal dispara um deploy automátic
 
 ### 10 · Domínio próprio
 
-1. **Vercel → seu projeto → Settings → Domains → Add Domain**
-2. Adicione `seudominio.com` e `www.seudominio.com`
-3. **Configure o DNS** no seu registrador (Registro.br, Cloudflare, GoDaddy…):
-   - Raiz (`seudominio.com`): registro **A** → `76.76.21.21`
-   - `www`: registro **CNAME** → `cname.vercel-dns.com`
-4. Aguarde a propagação (minutos a horas)
-5. O SSL é emitido automaticamente pela Vercel via Let's Encrypt
-6. **Atualize a `SITE_URL`** no Vercel para a URL final
-7. Force um redeploy para regenerar `sitemap.xml` e `rss.xml`
+Veja [Publicar o site → Domínio próprio](./docs/guia/publicar.md#domínio-próprio).
 
 <br />
 
@@ -483,6 +442,7 @@ rubrica/
 | `convex deploy` falha no Vercel | Falta `CONVEX_DEPLOY_KEY` nas env vars do Vercel |
 | Login não funciona / bootstrap não aparece | `BOOTSTRAP_ALLOWED` removido antes de criar o primeiro usuário — sete de novo, crie e remova |
 | Plugin desativado ainda aparece em produção | Falta um redeploy para regenerar `public/data/plugins.json` |
+| Botão "Publicar" do admin diz que não está configurado ou que o token não vale | Rode `npx create-rubrica publicar` na pasta do projeto: ele pede um token novo da Vercel |
 | Notificações Telegram não chegam | Você ainda não enviou `/start` para o seu bot |
 | Cliente pagou e o checkout não vira "pago" | Webhook do Asaas não cadastrado, com token diferente do `ASAAS_WEBHOOK_TOKEN` ou cadastrado na conta errada (sandbox × produção) |
 | "Pagamentos não configurados" no checkout | Falta `ASAAS_API_KEY` no Convex |

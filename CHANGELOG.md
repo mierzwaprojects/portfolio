@@ -2,6 +2,73 @@
 
 O que mudou em cada versão do Rubrica (template e CLI `create-rubrica`). Detalhes de cada uma nas [notas da release](https://github.com/MierzwaMatheus/rubrica/releases). Para atualizar um projeto existente, veja [Atualizando o seu Rubrica](./docs/atualizacao.md).
 
+## 1.7.0 — 2026-10-25
+
+Propostas com preço por item, desconto e brinde. As skills passam a abrir issue quando o Rubrica não faz o que foi pedido, e os projetos ganham instruções para agentes de IA.
+
+**Vindo da 1.6:**
+- Atualize com `npx create-rubrica@latest update`. Não precisa de versão nova do CLI.
+- O backend mudou (`convex/`): publique no Convex do computador com `npx convex dev --once` e, no site no ar, com `npx create-rubrica publicar`. Os campos novos são opcionais: as propostas existentes continuam iguais.
+- Para o desconto aparecer em contratos de modelos já salvos, acrescente `{{discount}}` ao modelo em `/admin/contracts`.
+
+### Propostas
+- **Preço por item:** cada item do escopo pode ter preço, mostrado ao lado dele na proposta e no contrato.
+- **Desconto:** campo opcional de valor original (antes do desconto). A proposta mostra o original riscado, o desconto em R$ e % e o valor final. O admin sugere o valor original pela soma dos itens e avisa quando a soma não fecha.
+- **Brinde:** marque um item com preço como brinde. Na proposta, ele aparece com o badge "Brinde", o preço riscado e R$ 0,00.
+- O valor do projeto continua sendo o valor final, usado no contrato e nas formas de pagamento. O contrato cita o desconto e os brindes, e os modelos de contrato ganham as variáveis `{{original_value}}` e `{{discount}}`.
+
+### Skills e agentes
+- **Abrir issue:** quando a pessoa pede algo que o Rubrica não suporta, ou algo quebra, as skills decidem se é bug ou pedido, procuram uma issue parecida e, com o "ok" da pessoa, abrem no GitHub do Rubrica (pelo `gh` ou por um link preenchido), sem dados privados.
+- A skill `rubrica` sabe mexer em preços, desconto e brinde das propostas.
+- **`AGENTS.md` e `CLAUDE.md`** na raiz do projeto: ensinam agentes como Claude Code, Codex e Cursor a atualizar o Rubrica (incluindo os arquivos `.rubrica-new`), o que eles podem rodar no CLI e o que fica com você. Veja "Com um agente de IA" em [Comandos do CLI](./docs/guia/cli.md).
+
+## 1.6.0 — 2026-10-25
+
+O site do Rubrica ganha versão em inglês, a página de novidades e a documentação, com três guias novos: começar, comandos do CLI e publicar.
+
+**Vindo da 1.5:**
+- Atualize com `npx create-rubrica@latest update` para receber a skill `rubrica-voz` que entende a entrevista em inglês. Não precisa de versão nova do CLI nem de publicar nada no Convex.
+
+### Site do Rubrica
+- **Em inglês**, em [userubrica.vercel.app/en](https://userubrica.vercel.app/en/), com seletor de idioma no topo. Combinador, "Crie o seu", layouts e esquemas, tudo traduzido. A página avisa que o CLI e o painel são em português.
+- **Novidades** em `/novidades` (e `/en/changelog`): este changelog no próprio site, com índice de versões.
+- **Documentação** em `/docs` (e `/en/docs`): o guia dos templates, os 13 layouts, os esquemas de cores, criar um layout e atualizar viram páginas do site, com navegação e índice. Os links do site deixam de mandar para o GitHub.
+
+### Guias novos
+- [Começando](./docs/guia/comecando.md): do zero ao site rodando no computador, e o que preencher em cada tela do painel.
+- [Comandos do CLI](./docs/guia/cli.md): todas as perguntas, opções e arquivos do `create`, e os outros comandos.
+- [Publicar o site](./docs/guia/publicar.md): a primeira publicação, o botão Publicar do painel, outro computador, domínio próprio e problemas comuns.
+- O README e o README do CLI ficaram mais curtos e apontam para esses guias.
+
+### Entrevista de voz em inglês
+- Em [/en/voice](https://userubrica.vercel.app/en/voice), com o ditado em inglês e as respostas salvas à parte das em português. A skill `rubrica-voz` reconhece a entrevista em inglês e observa a voz no idioma das respostas.
+
+## 1.5.0 — 2026-10-25
+
+O botão **Publicar** do painel passa a funcionar sem GitHub, o agente de IA entra no site publicado, e o `publicar` fica seguro em outro computador.
+
+**Vindo da 1.4:**
+- Atualize com `npx create-rubrica@latest update` e rode `npx create-rubrica@latest publicar`. Ele anota no `rubrica.json` o endereço do site publicado e oferece ligar o botão Publicar do painel (você cria um token na Vercel e cola no terminal, uma vez só).
+- Versione o `rubrica.json` junto com o projeto: é por ele que o `setup` e o `publicar` reconhecem, num outro computador, que o site já está no ar.
+
+### Botão Publicar do painel
+- **Sem GitHub.** A Vercel só cria Deploy Hook em projeto ligado ao GitHub, e o `publicar` envia pelo terminal. Agora o painel usa um token da Vercel para refazer o último deploy de produção: o build roda de novo e busca o conteúdo atualizado. Quem tem Deploy Hook continua usando o hook.
+- O `publicar` abre a página de tokens da Vercel, explica o que preencher, recebe o token sem mostrá-lo na tela, confere se ele acessa o projeto e grava no banco de produção.
+- O painel mostra o motivo quando a publicação não sai (botão não configurado, token vencido). Antes dizia "Deploy iniciado com sucesso!" mesmo com erro.
+
+### Agente de IA no site publicado
+- A skill `rubrica` ganha `--producao` (ou `RUBRICA_AMBIENTE=producao`) para mexer no site no ar. O padrão continua sendo o site do computador.
+- Num projeto já publicado, o login pergunta se você quer entrar no site publicado ou no do computador. O `status` mostra os dois endereços.
+
+### `publicar` e `setup` em outro computador
+- O `publicar` grava em `producao` no `rubrica.json` o endereço do banco e do site publicados (projetos da 1.4 ganham isso ao publicar de novo).
+- Sem a pasta `.vercel` (clone novo, outro computador), o `publicar` percebe que o site já está publicado, liga a pasta ao mesmo projeto da Vercel e só publica. Antes ele refazia a primeira vez: gerava chaves de login novas (todo mundo saía do painel) e regravava os dados do painel.
+- Se o computador estiver ligado a outro projeto do Convex, o `publicar` para antes de gravar qualquer coisa, para não trocar o banco do site no ar por um vazio. O `setup`, num clone de site publicado, liga a um projeto existente do Convex em vez de criar um novo.
+- Publicando de novo, o Telegram e o OpenRouter ligados no computador depois da primeira vez vão para a produção (só os que faltam lá).
+
+### `create`
+- O git começa na branch `main`, com um primeiro commit do projeto montado. Antes, o nome da branch dependia do computador (em geral `master`) e ela só passava a existir no primeiro commit da pessoa.
+
 ## 1.4.1 — 2026-10-24
 
 Layouts ajustados para telas largas (monitores de 1920px para cima). Nada muda em telas de até 1600px.
