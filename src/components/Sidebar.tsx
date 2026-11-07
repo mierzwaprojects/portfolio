@@ -89,7 +89,7 @@ const NAV_ITEMS = NAV_ITEMS_KEYS
     return (
       <div className="flex flex-col h-full bg-[var(--bg)] border-r border-[var(--text)]/10 w-full overflow-y-auto">
         {/* Marca */}
-        <Link href="/">
+        <Link href="/" asChild>
           <a className="block px-6 pt-7 pb-2" aria-label="mmlo — início" data-umami-event="sidebar-logo">
             <img src="/brand/mm-lockup-horizontal-dark.svg" alt="Matheus Mierzwa — mmlo" className="h-7 w-auto" />
           </a>
@@ -116,12 +116,13 @@ const NAV_ITEMS = NAV_ITEMS_KEYS
             </div>
           )}
 
+          {/* Nome em <p>, não <h1>: a sidebar aparece em todas as páginas; o título principal é o de cada página. */}
           {isLoading ? (
             <Skeleton className="h-6 w-40 mb-3" />
           ) : (
-            <h1 className="font-bold text-xl text-[var(--text)] mb-3 text-center">
+            <p className="font-bold text-xl text-[var(--text)] mb-3 text-center">
               {contactInfo?.name || ""}
-            </h1>
+            </p>
           )}
 
           <div className="w-full rounded-lg bg-[var(--text)]/5 border border-[var(--text)]/5 flex items-center justify-center px-4 py-3 backdrop-blur-sm">
@@ -160,7 +161,7 @@ const NAV_ITEMS = NAV_ITEMS_KEYS
               const isActive = location === item.href;
               return (
                 <li key={item.href}>
-                  <Link href={item.href}>
+                  <Link href={item.href} asChild>
                     <a
                       className={cn(
                         "flex items-center px-4 py-3 rounded-md text-sm font-medium transition-all duration-300 group relative overflow-hidden",
@@ -338,7 +339,7 @@ const NAV_ITEMS = NAV_ITEMS_KEYS
     <>
       {/* Mobile Header */}
       <div className="fixed top-0 left-0 right-0 h-16 bg-[var(--bg)]/90 backdrop-blur-md border-b border-[var(--text)]/10 z-50 flex items-center justify-between gap-3 px-4 lg:hidden">
-        <Link href="/">
+        <Link href="/" asChild>
           <a aria-label="mmlo — início" className="flex items-center">
             <img src="/brand/mm-lockup-horizontal-dark.svg" alt="Matheus Mierzwa — mmlo" className="h-6 w-auto" />
           </a>
