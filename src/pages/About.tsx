@@ -97,6 +97,8 @@ export default function About() {
         animate="show"
         className="space-y-16 pb-12"
       >
+        {/* Título da página para leitores de tela e buscadores (o visual começa direto nas seções). */}
+        <h1 className="sr-only">{t("seo.aboutTitle")}</h1>
         {/* Resumo profissional: o mesmo texto do "Sobre mim" da home, editado no admin */}
         {professionalParagraphs.length > 0 && (
           <motion.section variants={item}>

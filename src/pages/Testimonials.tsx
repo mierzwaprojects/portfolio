@@ -109,10 +109,10 @@ export default function TestimonialsPage() {
       >
         {/* Header */}
         <motion.section variants={item}>
-          <h2 className="text-2xl font-bold text-foreground-strong mb-3 flex items-center">
+          <h1 className="text-2xl font-bold text-foreground-strong mb-3 flex items-center">
             <MessageSquare className="w-5 h-5 text-neon-purple mr-3" />
             {t("testimonials.title")}
-          </h2>
+          </h1>
           <p className="text-foreground/65 text-sm">
             {t("testimonials.subtitle")}
             {!isLoading && resolved.length > 0 && (
