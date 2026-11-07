@@ -87,8 +87,8 @@ export default function About() {
   return (
     <>
       <SEO
-        title="Sobre Mim"
-        description="Conheça minha trajetória, dia-a-dia e respostas para perguntas frequentes sobre meu trabalho como desenvolvedor."
+        title={t("seo.aboutTitle")}
+        description={t("seo.aboutDescription")}
         url="/sobre"
       />
       <motion.div
