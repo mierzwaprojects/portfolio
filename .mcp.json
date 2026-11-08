@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "rubrica": {
+      "command": "npx",
+      "args": [
+        "rubrica",
+        "mcp"
+      ]
+    }
+  }
+}

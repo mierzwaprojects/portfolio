@@ -1,0 +1,23 @@
+# Gerado pelo Rubrica (mesma configuração do vercel.json). Para Netlify e Cloudflare Pages.
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-Frame-Options: DENY
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://*.convex.cloud wss://*.convex.cloud https://*.convex.site; frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube-nocookie.com https://player.vimeo.com https://calendly.com https://cal.com https://app.cal.com https://calendar.google.com https://docs.google.com https://form.typeform.com https://*.typeform.com https://tally.so https://www.openstreetmap.org https://open.spotify.com https://w.soundcloud.com https://embed.figma.com https://www.figma.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+/admin*
+  ! Strict-Transport-Security
+  ! X-Content-Type-Options
+  ! Referrer-Policy
+  ! Permissions-Policy
+  ! X-Frame-Options
+  ! Content-Security-Policy
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.convex.cloud wss://*.convex.cloud https://*.convex.site; frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube-nocookie.com https://player.vimeo.com https://calendly.com https://cal.com https://app.cal.com https://calendar.google.com https://docs.google.com https://form.typeform.com https://*.typeform.com https://tally.so https://www.openstreetmap.org https://open.spotify.com https://w.soundcloud.com https://embed.figma.com https://www.figma.com; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
