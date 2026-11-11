@@ -1,11 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "astro",
-  "git": {
-    "deploymentEnabled": {
-      "rubrica-v2": false
-    }
-  },
   "buildCommand": "npx convex deploy --cmd-url-env-var-name CONVEX_URL --cmd \"npm run build\"",
   "trailingSlash": false,
   "redirects": [],
