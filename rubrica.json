@@ -1,20 +1,67 @@
 {
-  "version": "1.13.1",
-  "layout": "cyberpunk",
-  "theme": "neon",
-  "fontSans": "Chakra Petch",
-  "fontMono": "Chakra Petch",
-  "colorMode": "dark",
-  "colorModeToggle": false,
-  "texture": "none",
-  "plugins": {},
-  "identity": {
-    "siteName": "Matheus Mierzwa",
-    "siteUrl": "https://www.mmlo.com.br",
-    "siteDescription": "AI Enablement Lead e Tech Lead Front-end. Transformo skills de IA em sistemas internos usados todos os dias, com React, TypeScript, Node.js, Convex e Keycloak. Projetos, artigos e serviços.",
-    "authorName": "Matheus Mierzwa",
-    "authorEmail": "",
-    "twitterHandle": "matheusmierzwa",
-    "lang": "pt-BR"
+  "rubrica": 2,
+  "version": "2.1.0",
+  "tipo": "pessoal",
+  "tema": "cyberpunk",
+  "identidade": {
+    "nome": "Matheus Mierzwa",
+    "url": "https://www.mmlo.com.br",
+    "descricao": "AI Enablement Lead e Tech Lead Front-end. Transformo skills de IA em sistemas internos usados todos os dias, com React, TypeScript, Node.js, Convex e Keycloak. Projetos, artigos e serviços.",
+    "autor": "Matheus Mierzwa",
+    "twitter": "matheusmierzwa"
+  },
+  "idiomas": {
+    "lista": [
+      "pt-BR",
+      "en"
+    ],
+    "principal": "pt-BR"
+  },
+  "aparencia": {
+    "esquema": "neon",
+    "modo": "dark",
+    "alternancia": false,
+    "fonteSans": "Chakra Petch",
+    "fonteMono": "Chakra Petch"
+  },
+  "plugins": {
+    "contact-wizard": true,
+    "proposals": true,
+    "contract-templates": true,
+    "payments": true,
+    "blog": true,
+    "portfolio": true,
+    "resume": true,
+    "about": true,
+    "testimonials": true,
+    "testimonials-intake": true,
+    "ai-resumes": false,
+    "translation": true,
+    "analytics": false,
+    "audit-log": true,
+    "media-manager": true
+  },
+  "migracao": {
+    "de": "1.13.1",
+    "layoutV1": "cyberpunk",
+    "em": "2026-11-08"
+  },
+  "v1": {
+    "version": "1.13.1",
+    "layout": "cyberpunk",
+    "theme": "neon",
+    "fontSans": "Chakra Petch",
+    "fontMono": "Chakra Petch",
+    "colorMode": "dark",
+    "colorModeToggle": false,
+    "identity": {
+      "siteName": "Matheus Mierzwa",
+      "siteUrl": "https://www.mmlo.com.br",
+      "siteDescription": "AI Enablement Lead e Tech Lead Front-end. Transformo skills de IA em sistemas internos usados todos os dias, com React, TypeScript, Node.js, Convex e Keycloak. Projetos, artigos e serviços.",
+      "authorName": "Matheus Mierzwa",
+      "authorEmail": "",
+      "twitterHandle": "matheusmierzwa",
+      "lang": "pt-BR"
+    }
   }
 }

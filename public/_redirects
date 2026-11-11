@@ -1,0 +1,9 @@
+# Gerado pelo Rubrica (mesma configuração do vercel.json). Para Netlify e Cloudflare Pages.
+/proposta/:slug /_rubrica/app/proposta 200
+/:locale/proposta/:slug /_rubrica/app/:locale/proposta 200
+/proposta/:slug/aceitar /_rubrica/app/proposta-aceite 200
+/:locale/proposta/:slug/aceitar /_rubrica/app/:locale/proposta-aceite 200
+/checkout/:uniqueLink /_rubrica/app/checkout 200
+/:locale/checkout/:uniqueLink /_rubrica/app/:locale/checkout 200
+/payment-success/:uniqueLink /_rubrica/app/pagamento-concluido 200
+/:locale/payment-success/:uniqueLink /_rubrica/app/:locale/pagamento-concluido 200
