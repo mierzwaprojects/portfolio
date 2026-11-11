@@ -21,11 +21,11 @@ importers:
         specifier: ^0.0.96
         version: 0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5)
       '@rubrica/core':
-        specifier: ^2.0.0
-        version: 2.0.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))
+        specifier: ^2.1.0
+        version: 2.1.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))
       '@rubrica/theme-cyberpunk':
-        specifier: ^2.0.0
-        version: 2.0.0(@rubrica/core@2.0.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1)))(react@19.2.5)
+        specifier: ^2.1.0
+        version: 2.1.0(@rubrica/core@2.1.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1)))(react@19.2.5)
       astro:
         specifier: ^7.4.0
         version: 7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1)
@@ -800,9 +800,6 @@ packages:
     resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
     engines: {node: '>=6.0.0'}
 
-  '@jridgewell/sourcemap-codec@1.5.5':
-    resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
-
   '@jridgewell/sourcemap-codec@1.6.0':
     resolution: {integrity: sha512-T7jf+5zgsZHwNJ4lvQ7/aezbyk0nNX+zJVWpmHA7VYsEx7a7qr5Rg5IbtJFqkgze5Y2sruq1RUY8Q837Od7iFw==}
 
@@ -1298,8 +1295,8 @@ packages:
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
 
-  '@rubrica/core@2.0.0':
-    resolution: {integrity: sha512-+krLjLscvKWGpvEchT6/+D4sN/+neHZjAAzIoC5dOTqT2fnaObZjignkCan+WES6LbOTC0jiQQCyFsFWHlFB6A==}
+  '@rubrica/core@2.1.0':
+    resolution: {integrity: sha512-cDbg0SMWcqwgVJZk2xr83uQaNT6Gls7vygy338VyNWyKnOSyFjD/LVKkI/brIjUzk7/Z3hbilXpZ5aZKw7ct1w==}
     peerDependencies:
       '@astrojs/react': ^7.1.4
       '@auth/core': ^0.41.3
@@ -1314,16 +1311,16 @@ packages:
     engines: {node: '>=22.23.4'}
     hasBin: true
 
-  '@rubrica/theme-cyberpunk@2.0.0':
-    resolution: {integrity: sha512-3DYV5+MGl/X1p0Ay2c72AqhyzeIQ3G5lmoPKujiYHqY0wCUA3N8pA9A/yShp4KeWMz59Ti9GM1VAwl9EZVddaQ==}
+  '@rubrica/theme-cyberpunk@2.1.0':
+    resolution: {integrity: sha512-cQat9P3eDMQtP6/2rQBYHyxQbrvDbVa4hXN4CNgsKqXzT42QJSRr749lZnAsJcHvNEnQ7pHlePqAZ+viILQNxg==}
     peerDependencies:
-      '@rubrica/core': ^2.0.0
+      '@rubrica/core': ^2.1.0
       react: ^19.2.0
 
-  '@rubrica/theme-padrao@2.0.0':
-    resolution: {integrity: sha512-I8fY9RzlC62Gl3WkTqKQ+crsChoOdr8CnXDWfzFR/L2PGdVAXh/+ddjvebLX24yCFFwcyRipwIfr3negLcnPbQ==}
+  '@rubrica/theme-padrao@2.1.0':
+    resolution: {integrity: sha512-I/6f7SMkThfHoU0+ROg7NgvJ3i0oIyQkJrssEKp3lWNE3qteVbs02S5/jXkAtCaBfGgtuSbF7TTBCQidU7SgJg==}
     peerDependencies:
-      '@rubrica/core': ^2.0.0
+      '@rubrica/core': ^2.1.0
       react: ^19.2.0
 
   '@shikijs/core@4.6.0':
@@ -3548,7 +3545,7 @@ snapshots:
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.5.5
+      '@jridgewell/sourcemap-codec': 1.6.0
       '@jridgewell/trace-mapping': 0.3.31
 
   '@jridgewell/remapping@2.3.5':
@@ -3558,14 +3555,12 @@ snapshots:
 
   '@jridgewell/resolve-uri@3.1.2': {}
 
-  '@jridgewell/sourcemap-codec@1.5.5': {}
-
   '@jridgewell/sourcemap-codec@1.6.0': {}
 
   '@jridgewell/trace-mapping@0.3.31':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.5.5
+      '@jridgewell/sourcemap-codec': 1.6.0
 
   '@modelcontextprotocol/sdk@1.32.2(zod@4.6.7)':
     dependencies:
@@ -3947,7 +3942,7 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@rubrica/core@2.0.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))':
+  '@rubrica/core@2.1.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))':
     dependencies:
       '@astrojs/react': 7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1)
       '@auth/core': 0.41.3
@@ -3994,15 +3989,15 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@rubrica/theme-cyberpunk@2.0.0(@rubrica/core@2.0.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1)))(react@19.2.5)':
+  '@rubrica/theme-cyberpunk@2.1.0(@rubrica/core@2.1.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1)))(react@19.2.5)':
     dependencies:
-      '@rubrica/core': 2.0.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))
-      '@rubrica/theme-padrao': 2.0.0(@rubrica/core@2.0.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1)))(react@19.2.5)
+      '@rubrica/core': 2.1.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))
+      '@rubrica/theme-padrao': 2.1.0(@rubrica/core@2.1.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1)))(react@19.2.5)
       react: 19.2.5
 
-  '@rubrica/theme-padrao@2.0.0(@rubrica/core@2.0.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1)))(react@19.2.5)':
+  '@rubrica/theme-padrao@2.1.0(@rubrica/core@2.1.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1)))(react@19.2.5)':
     dependencies:
-      '@rubrica/core': 2.0.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))
+      '@rubrica/core': 2.1.0(@astrojs/react@7.1.4(@types/node@22.20.5)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(esbuild@0.27.7)(jiti@2.7.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(tsx@4.21.0)(yaml@2.9.1))(@auth/core@0.41.3)(@convex-dev/auth@0.0.96(@auth/core@0.41.3)(convex@1.49.0(react@19.2.5))(react@19.2.5))(@floating-ui/dom@1.7.6)(@tiptap/core@3.33.0(@tiptap/pm@3.33.0))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(astro@7.4.7(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))(convex@1.49.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.3.6(@types/node@22.20.5)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.1))
       react: 19.2.5
 
   '@shikijs/core@4.6.0':
@@ -4052,7 +4047,7 @@ snapshots:
       jiti: 2.7.0
       lightningcss: 1.33.0
       magic-string: 1.4.5
-      source-map-js: 1.2.1
+      source-map-js: 1.2.2
       tailwindcss: 4.3.5
 
   '@tailwindcss/oxide-android-arm64@4.3.5':
