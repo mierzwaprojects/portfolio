@@ -1,6 +1,6 @@
 {
   "rubrica": 2,
-  "version": "2.1.2",
+  "version": "2.2.0",
   "tipo": "pessoal",
   "tema": "cyberpunk",
   "identidade": {
@@ -63,5 +63,9 @@
       "twitterHandle": "matheusmierzwa",
       "lang": "pt-BR"
     }
+  },
+  "telemetria": {
+    "projeto": "ace60938-8df2-4403-b7e3-4e1dde54dacc",
+    "ativa": true
   }
 }
